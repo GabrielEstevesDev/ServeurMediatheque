@@ -15,5 +15,9 @@ public class Mediatheque {
 		abos = new ArrayList<>();
 		docs = new ArrayList<>();
 	}
+	
+	public void AddAbo(Abonne a) {
+		this.abos.add(a);
+	}
 
 }
