@@ -1,5 +1,4 @@
 package main;
-
 import java.sql.*;
 
 import Mediatheque.Mediatheque;
@@ -8,9 +7,9 @@ import document.Abonne;
 
 public class main {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Mediatheque m=new Mediatheque();
-		Class.forName("com.mysql.cj.jdbv.Driver");
-		Connection connect= DriverManager.getConnection("jdbc:mysql://localhost:3306:java1","root","");
+		Class.forName ("com.mysql.cj.jdbc.Driver");
+		 Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/mediatheque", "root", "");
+		 Mediatheque m=new Mediatheque();
 		String sql="SELECT * FROM Abonne";
 		Statement req1 = connect.createStatement ( ) ;
 		PreparedStatement req2 = connect.prepareStatement ( sql) ;
@@ -21,10 +20,11 @@ public class main {
 			String nom = res.getString("nom");
 			Date naissance = res.getDate("naissance");
 			Abonne a=new Abonne(num,nom,naissance);
+			System.out.println(a);
 			m.AddAbo(a);
 		}
 		connect.close ( );
 		res.close ( );
-
+		
 	}
 }
