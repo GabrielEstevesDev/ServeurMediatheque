@@ -1,18 +1,29 @@
 package main;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.ServerSocket;
+import java.util.List;
 
-
+import Mediatheque.Mediatheque;
 import Services.ServiceRes;
 import bserveur.Serveur;
-import bserveur.ServiceAbstract;
+import db.requetes;
+import document.Abonne;
+import document.Document;
 
 public class ServeurMediatheque {
-	
+	private static int PORTRes = 3000;
+	private static int PORTEmp = 4000;
+	private static int PORTRet = 5000;
+	private static Mediatheque Med;
 		public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-			new Thread(new Serveur(ServiceRes.class,3000)).start();
+			List<Abonne> ListAbo=requetes.getAllAbonne();
+			List<Document> ListDoc=requetes.getAllDocuments();
+			Med = new Mediatheque(ListAbo, ListDoc);
+			new Thread(new Serveur(ServiceRes.class,PORTRes)).start();
+			//new Thread(new Serveur(ServiceRes.class,PORTEmp)).start();
+			//new Thread(new Serveur(ServiceRes.class,PORTRet)).start();
 		}
+		
 	}
 	
 

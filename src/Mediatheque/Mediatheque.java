@@ -7,17 +7,32 @@ import document.DVD;
 import document.Document;
 
 public class Mediatheque {
-	private List<Abonne> abos;
-	private List<Document> docs;
+	private static List<Abonne> abos;
+	private static List<Document> docs;
 	
 	
-	public Mediatheque() {
-		abos = new ArrayList<>();
-		docs = new ArrayList<>();
+	public Mediatheque(List<Abonne> abos1,List<Document> docs1) {
+		abos = abos1;
+		docs = docs1;
 	}
 	
-	public void AddAbo(Abonne a) {
-		this.abos.add(a);
+	public static Abonne getAbo(int i) {
+		for(Abonne ab :abos) {
+			if(ab.getId()==i) {
+				return ab;
+			}
+		}
+		return null;
 	}
+
+	public static Document getDoc(int numDoc) {
+		for(Document doc :docs) {
+			if(doc.numero()==numDoc) {
+				return doc;
+			}
+		}
+		return null;
+	}
+	
 
 }

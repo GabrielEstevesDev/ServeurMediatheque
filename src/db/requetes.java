@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import document.Abonne;
+import document.DVD;
+import document.Document;
 
 public class requetes implements RequetesSQL{
 
@@ -22,17 +28,70 @@ public class requetes implements RequetesSQL{
 		
 	}
 	
-	public static String getAllDocuments() {
+	public static List<Document> getAllDocuments() {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
 			String selectSql = "SELECT * FROM dvd";
 			ResultSet resultSet = statement.executeQuery(selectSql);
-			String s = "";
+			List<Document> L=new ArrayList<Document>();
 			while (resultSet.next()) {
-			   s+="numero: " + resultSet.getString(1) + " titre: " + resultSet.getString(2) + " adulte : " + resultSet.getString(3) + "\n²";
+				Document a =new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
+				L.add(a);
 			}
-			return s;
+			return L;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static List<Abonne> getAllAbonne() {
+		try {
+			Connection connexion = ConnexionBD.getConnexion();
+			Statement statement = connexion.createStatement();
+			String selectSql = "SELECT * FROM abonne";
+			ResultSet resultSet = statement.executeQuery(selectSql);
+			List<Abonne> L=new ArrayList<Abonne>();
+			while (resultSet.next()) {
+			   Abonne a =new Abonne(resultSet.getInt(1), resultSet.getString(2),resultSet.getDate(3) );
+			   L.add(a);
+			}
+			return L;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static Abonne selectAbonne(int i) {
+		try {
+			Connection connexion = ConnexionBD.getConnexion();
+			Statement statement = connexion.createStatement();
+			String selectSql = "SELECT * FROM abonne Where id="+i;
+			ResultSet resultSet = statement.executeQuery(selectSql);
+			Abonne  a = null;
+			while (resultSet.next()) {
+				   a =new Abonne(resultSet.getInt(1), resultSet.getString(2),resultSet.getDate(3) );
+				}
+			return a;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static Document selectDocument(int i) {
+		try {
+			Connection connexion = ConnexionBD.getConnexion();
+			Statement statement = connexion.createStatement();
+			String selectSql = "SELECT * FROM dvd Where id="+i;
+			ResultSet resultSet = statement.executeQuery(selectSql);
+			Document  a = null;
+			while (resultSet.next()) {
+				   a =new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
+				}
+			return a;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

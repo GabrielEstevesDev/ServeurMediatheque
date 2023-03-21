@@ -71,5 +71,10 @@ public class AbstractDocument implements Document {
 		emprunter=false;
 		
 	}
+	
+	public String toString() {
+		return "numero : "+numero+" titre : "+titre;
+		
+	}
 
 }

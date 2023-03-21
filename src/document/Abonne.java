@@ -24,6 +24,10 @@ public class Abonne {
 		return age;
 	}
 	
+	public int getId() {
+		return num;
+	}
+	
 	@Override 
 	public String toString() {
 		return "num : "+this.num + " nom :"+ this.nom + " naissance : " + this.naissance;
