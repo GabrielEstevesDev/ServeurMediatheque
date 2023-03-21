@@ -41,6 +41,7 @@ public class AbstractDocument implements Document {
 	}
 	public void setReserveur(Abonne ab) {
 		this.reserveur = ab;
+		reserver=true;
 	}
 	@Override
 	public Abonne reserveur() {
@@ -49,16 +50,22 @@ public class AbstractDocument implements Document {
 	}
 
 	@Override
-	public void reservationPour(Abonne ab) {
-		assert(reserver==false &&emprunter==false );
+	public void reservationPour(Abonne ab) throws RestrictionException {
+		if(emprunter==true )
+			throw new RestrictionException("Ce DVD est déjà emprunté");
+		if(reserver==true)
+			throw new RestrictionException("Ce DVD est déja réservé");
 		reserver=true;
 		this.reserveur=ab;
 		
 	}
 
 	@Override
-	public void empruntPar(Abonne ab) {
-		assert(reserveur==ab || emprunter==false );
+	public void empruntPar(Abonne ab) throws RestrictionException {
+		if(reserveur!=ab)
+			throw new RestrictionException("Ce DVD est déja réservé");
+		if(emprunter==true)
+			throw new RestrictionException("Ce DVD est déjà emprunté");
 		emprunter=true;
 		emprunteur=ab;
 	}

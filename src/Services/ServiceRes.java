@@ -12,13 +12,13 @@ import bserveur.ServiceAbstract;
 import bttp.bttp;
 import db.requetes;
 import document.Abonne;
-import document.Document;
+import document.RestrictionException;
 
 public class ServiceRes extends ServiceAbstract {
 
 	public ServiceRes(Socket socketCotéServeur) {
 		super(socketCotéServeur);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -28,19 +28,21 @@ public class ServiceRes extends ServiceAbstract {
 			
 			PrintWriter socketOut = new PrintWriter (this.getSocket().getOutputStream ( ), true);
 			
-			//System.out.println(requetes.getAllDocuments());
 			socketOut.println(bttp.encoder(requetes.getAllDocuments()+"\nVeuillez saisir votre numéro d'abonné"));
 			String num =socketIn.readLine();
-			
+		
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
 			if(ab==null) {
-				
+				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect"));
 			}
-			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez  reserver ?"));
+			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez reserver ?"));
 			String numDoc =socketIn.readLine();
-			Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
+			try {
+				Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
+			} catch (RestrictionException e) {
+				socketOut.println(bttp.encoder(e.getMessage()));
+			}
 			this.getSocket().close();
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -11,20 +11,16 @@ public class DVD extends AbstractDocument {
 
 
 	@Override
-	public void reservationPour(Abonne ab) {
-		assert(super.estReserver()==false &&super.estEmprunter()==false );
-		if(adulte==true) {
-			assert(ab.getAge()>=16);
+	public void reservationPour(Abonne ab) throws RestrictionException {
+		if(super.estEmprunter()==true)
+			throw new RestrictionException("Ce DVD est emprunté");
+		if(super.estReserver()==true)
+			throw new RestrictionException("Ce DVD est réservé");
+		if(adulte==true && ab.getAge()<=16) {
+			throw new RestrictionException("Vous n'avez pas l'âge recquis pour ce DVD");
 		}
 		super.setReserveur(ab);
 
-	}
-
-	@Override
-	public void empruntPar(Abonne ab) {
-		assert(super.reserveur()==ab || super.estEmprunter()==false );
-		//		emprunter=true; setEmprunteur( à rajouter)
-		//		emprunteur=ab;
 	}
 
 	@Override

@@ -39,6 +39,8 @@ public class requetes implements RequetesSQL{
 				Document a =new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
 				L.add(a);
 			}
+			resultSet.close();
+			statement.close();
 			return L;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -97,6 +99,12 @@ public class requetes implements RequetesSQL{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void closeConnexion() throws SQLException {
+		ConnexionBD.close();
+		
 	}
 
 }

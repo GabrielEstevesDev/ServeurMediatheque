@@ -11,7 +11,7 @@ public class Mediatheque {
 	private static List<Document> docs;
 	
 	
-	public Mediatheque(List<Abonne> abos1,List<Document> docs1) {
+	public static void setMediatheque(List<Abonne> abos1,List<Document> docs1) {
 		abos = abos1;
 		docs = docs1;
 	}

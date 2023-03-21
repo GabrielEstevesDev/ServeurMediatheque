@@ -25,5 +25,10 @@ import java.sql.SQLException;
 	public static Connection getConnexion(){
 		return connect;
 	}
+
+	public static void close() throws SQLException {
+		connect.close();
+		
+	}
 	
 }

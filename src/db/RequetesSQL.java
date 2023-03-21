@@ -1,5 +1,7 @@
 package db;
 
+import java.sql.SQLException;
+
 public interface RequetesSQL {
 	void insert();
 	
@@ -7,5 +9,6 @@ public interface RequetesSQL {
 	
 	void delete();
 	
+	void closeConnexion() throws SQLException;
 	
 }

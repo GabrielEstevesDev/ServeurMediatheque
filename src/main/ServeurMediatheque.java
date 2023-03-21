@@ -18,7 +18,7 @@ public class ServeurMediatheque {
 		public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 			List<Abonne> ListAbo=requetes.getAllAbonne();
 			List<Document> ListDoc=requetes.getAllDocuments();
-			Med = new Mediatheque(ListAbo, ListDoc);
+			Mediatheque.setMediatheque(ListAbo, ListDoc);
 			new Thread(new Serveur(ServiceRes.class,PORTRes)).start();
 			//new Thread(new Serveur(ServiceRes.class,PORTEmp)).start();
 			//new Thread(new Serveur(ServiceRes.class,PORTRet)).start();
