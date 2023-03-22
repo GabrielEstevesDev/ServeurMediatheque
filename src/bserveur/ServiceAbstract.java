@@ -6,9 +6,9 @@ import java.net.Socket;
 
 public abstract class ServiceAbstract implements Runnable
 {
-    private final Socket maSocket;
+    private  Socket maSocket;
 
-    public ServiceAbstract(final Socket socketCoteServeur) {
+    public ServiceAbstract(Socket socketCoteServeur) {
         this.maSocket = socketCoteServeur;
     }
    
@@ -19,12 +19,14 @@ public abstract class ServiceAbstract implements Runnable
     @Override
     public abstract void run();
 
-    public void close() {
-        try {
-            this.maSocket.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+    protected void closeSocket() {
+        if (this.maSocket != null) {
+            try {
+                this.maSocket.close();
+            } catch (IOException e) {
+                // gérer l'exception
+            }
+            this.maSocket = null;
         }
     }
 }

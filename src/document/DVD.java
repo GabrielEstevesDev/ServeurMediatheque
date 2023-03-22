@@ -1,6 +1,6 @@
 package document;
 
-public class DVD extends AbstractDocument {
+public class DVD extends Document {
 	private boolean adulte;
 
 
@@ -12,15 +12,18 @@ public class DVD extends AbstractDocument {
 
 	@Override
 	public void reservationPour(Abonne ab) throws RestrictionException {
-		if(super.estEmprunter()==true)
-			throw new RestrictionException("Ce DVD est déjà emprunté");
-		if(super.estReserver()==true)
-			throw new RestrictionException("Ce DVD est déjà réservé");
 		if(adulte==true && ab.getAge()<=16) {
-			throw new RestrictionException("Vous n'avez pas l'âge recquis pour ce DVD");
+			throw new RestrictionException("Vous n'avez pas l'âge recquis pour réserver ce DVD");
 		}
-		super.setReserveur(ab);
+		super.reservationPour(ab);
 
+	}
+	
+	@Override
+	public void empruntPar(Abonne ab) throws RestrictionException {
+		if(adulte==true && ab.getAge()<=16) 
+			throw new RestrictionException("Vous n'avez pas l'âge recquis pour emprunter ce DVD");
+		super.empruntPar(ab);
 	}
 
 	@Override

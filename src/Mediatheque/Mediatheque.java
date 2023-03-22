@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import document.Abonne;
 import document.DVD;
-import document.Document;
+import document.IDocument;
 
 public class Mediatheque {
 	private static List<Abonne> abos;
-	private static List<Document> docs;
+	private static List<IDocument> docs;
 	
 	
-	public static void setMediatheque(List<Abonne> abos1,List<Document> docs1) {
+	public static void setMediatheque(List<Abonne> abos1,List<IDocument> docs1) {
 		abos = abos1;
 		docs = docs1;
 	}
@@ -25,8 +25,8 @@ public class Mediatheque {
 		return null;
 	}
 
-	public static Document getDoc(int numDoc) {
-		for(Document doc :docs) {
+	public static IDocument getDoc(int numDoc) {
+		for(IDocument doc :docs) {
 			if(doc.numero()==numDoc) {
 				return doc;
 			}
@@ -34,5 +34,12 @@ public class Mediatheque {
 		return null;
 	}
 	
+	public static String afficherDocs() {
+		String s = "";
+		for(IDocument doc: docs) {
+			s+=doc.toString()+"\n";
+		}
+		return s;
+	}
 
 }

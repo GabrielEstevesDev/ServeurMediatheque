@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import document.Abonne;
+import document.ConcurrentDocument;
 import document.DVD;
-import document.Document;
+import document.IDocument;
 
 public class requetes implements RequetesSQL{
 
@@ -28,15 +29,15 @@ public class requetes implements RequetesSQL{
 		
 	}
 	
-	public static List<Document> getAllDocuments() {
+	public static List<IDocument> getAllDocuments() {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
 			String selectSql = "SELECT * FROM dvd";
 			ResultSet resultSet = statement.executeQuery(selectSql);
-			List<Document> L=new ArrayList<Document>();
+			List<IDocument> L=new ArrayList<IDocument>();
 			while (resultSet.next()) {
-				Document a =new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
+				IDocument a =new ConcurrentDocument(new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3)));
 				L.add(a);
 			}
 			resultSet.close();
@@ -66,39 +67,16 @@ public class requetes implements RequetesSQL{
 		}
 		return null;
 	}
-	public static Abonne selectAbonne(int i) {
-		try {
-			Connection connexion = ConnexionBD.getConnexion();
-			Statement statement = connexion.createStatement();
-			String selectSql = "SELECT * FROM abonne Where id="+i;
-			ResultSet resultSet = statement.executeQuery(selectSql);
-			Abonne  a = null;
-			while (resultSet.next()) {
-				   a =new Abonne(resultSet.getInt(1), resultSet.getString(2),resultSet.getDate(3) );
-				}
-			return a;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	public static Document selectDocument(int i) {
-		try {
-			Connection connexion = ConnexionBD.getConnexion();
-			Statement statement = connexion.createStatement();
-			String selectSql = "SELECT * FROM dvd Where id="+i;
-			ResultSet resultSet = statement.executeQuery(selectSql);
-			Document  a = null;
-			while (resultSet.next()) {
-				   a =new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
-				}
-			return a;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	
+	public static void setEmprunteur(int numDoc, Integer numAb) {
+	    try {
+	        Connection connexion = ConnexionBD.getConnexion();
+	        Statement statement = connexion.createStatement();
+	        String update = "UPDATE dvd SET emprunteur = " + numAb + " WHERE id = " + numDoc;
+	        statement.executeUpdate(update);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override

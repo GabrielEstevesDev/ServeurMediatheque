@@ -14,9 +14,11 @@ import db.requetes;
 import document.Abonne;
 import document.RestrictionException;
 
-public class ServiceRes extends ServiceAbstract {
-	public ServiceRes(Socket socketCotéServeur) {
+public class ServiceEmp extends ServiceAbstract {
+
+	public ServiceEmp(Socket socketCotéServeur) {
 		super(socketCotéServeur);
+		
 	}
 
 	@Override
@@ -32,21 +34,28 @@ public class ServiceRes extends ServiceAbstract {
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
 			if(ab==null) {
 				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect"));
-				this.closeSocket();
+				this.getSocket().close();
 			}
-			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez reserver ?"));
+			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez emprunté ?"));
 			String numDoc =socketIn.readLine();
 			try {
-				Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
-				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le DVD "+numDoc));
-				
+				Mediatheque.getDoc(Integer.parseInt(numDoc)).empruntPar(ab);
+				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le DVD "+numDoc));
+				this.getSocket().close();
 			} catch (RestrictionException e) {
 				socketOut.println(bttp.encoder(e.getMessage()));
+				this.getSocket().close();
 			}
 			
 		} catch (IOException e) {
-			this.closeSocket();
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				this.getSocket().close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 	}
