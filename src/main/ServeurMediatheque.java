@@ -19,7 +19,8 @@ public class ServeurMediatheque {
 			List<Abonne> ListAbo=requetes.getAllAbonne();
 			List<Document> ListDoc=requetes.getAllDocuments();
 			Mediatheque.setMediatheque(ListAbo, ListDoc);
-			new Thread(new Serveur(ServiceRes.class,PORTRes)).start();
+			Serveur serv = new Serveur(ServiceRes.class,PORTRes);
+			new Thread(serv).start();
 			//new Thread(new Serveur(ServiceRes.class,PORTEmp)).start();
 			//new Thread(new Serveur(ServiceRes.class,PORTRet)).start();
 		}

@@ -13,9 +13,9 @@ public class DVD extends AbstractDocument {
 	@Override
 	public void reservationPour(Abonne ab) throws RestrictionException {
 		if(super.estEmprunter()==true)
-			throw new RestrictionException("Ce DVD est emprunté");
+			throw new RestrictionException("Ce DVD est déjà emprunté");
 		if(super.estReserver()==true)
-			throw new RestrictionException("Ce DVD est réservé");
+			throw new RestrictionException("Ce DVD est déjà réservé");
 		if(adulte==true && ab.getAge()<=16) {
 			throw new RestrictionException("Vous n'avez pas l'âge recquis pour ce DVD");
 		}
