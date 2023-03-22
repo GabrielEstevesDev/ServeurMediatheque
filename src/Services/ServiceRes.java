@@ -10,8 +10,8 @@ import java.net.Socket;
 import Mediatheque.Mediatheque;
 import bserveur.ServiceAbstract;
 import bttp.bttp;
-import db.requetes;
 import document.Abonne;
+import document.Document;
 import document.RestrictionException;
 
 public class ServiceRes extends ServiceAbstract {
@@ -31,16 +31,20 @@ public class ServiceRes extends ServiceAbstract {
 		
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
 			if(ab==null) {
-				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect"));
-				this.closeSocket();
+				socketOut.println(bttp.encoder("Le numéro d'"+Abonne.class.getSimpleName() +" est incorrect"));
+				this.getSocket().close();
 			}
 			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez reserver ?"));
 			String numDoc =socketIn.readLine();
+			if(Mediatheque.getDoc(Integer.parseInt(numDoc))==null) {
+				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+" n'existe pas"));
+				this.getSocket().close();
+			}
 			try {
 				Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
-				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le DVD "+numDoc));
+				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc));
 				
-			} catch (RestrictionException e) {
+			} catch (NullPointerException | RestrictionException e) {
 				socketOut.println(bttp.encoder(e.getMessage()));
 			}
 			
