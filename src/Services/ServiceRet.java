@@ -24,7 +24,7 @@ public class ServiceRet extends ServiceAbstract{
 		try {
 			BufferedReader socketIn = new BufferedReader(new InputStreamReader(this.getSocket().getInputStream()));
 			PrintWriter socketOut = new PrintWriter (this.getSocket().getOutputStream ( ), true);
-			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez retourner "));
+			socketOut.println(bttp.encoder("Quel document souhaitez-vous retourner ? Saisissez son numéro."));
 			String numDoc =socketIn.readLine();
 			Mediatheque.getDoc(Integer.parseInt(numDoc)).retour();
 			socketOut.println(bttp.encoder("Le retour  à bien été effectué pour le DVD "+numDoc));

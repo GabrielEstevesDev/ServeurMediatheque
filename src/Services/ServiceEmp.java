@@ -28,7 +28,7 @@ public class ServiceEmp extends ServiceAbstract {
 			
 			PrintWriter socketOut = new PrintWriter (this.getSocket().getOutputStream ( ), true);
 			
-			socketOut.println(bttp.encoder(Mediatheque.afficherDocs()+"\nVeuillez saisir votre numéro d'abonné"));
+			socketOut.println(bttp.encoder(Mediatheque.afficherDocs()+"\nQuel est votre numéro d'abonné ?"));
 			String num =socketIn.readLine();
 		
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
@@ -37,10 +37,10 @@ public class ServiceEmp extends ServiceAbstract {
 				this.getSocket().close();
 			}
 			
-			socketOut.println(bttp.encoder("Saisissez le numéro de document que vous voulez emprunté ?"));
+			socketOut.println(bttp.encoder("Quel document que vous voulez emprunté ? Saisissez son numéro."));
 			String numDoc =socketIn.readLine();
 			if(Mediatheque.getDoc(Integer.parseInt(numDoc))==null) {
-				socketOut.println(bttp.encoder("Ce'"+Document.class.getSimpleName()+"n'existe pas"));
+				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+"n'existe pas"));
 				this.getSocket().close();
 			}
 			try {
