@@ -1,6 +1,7 @@
-package document;
+package abonne;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Abonne {
 	private int num;
@@ -31,5 +32,22 @@ public class Abonne {
 	@Override 
 	public String toString() {
 		return "num : "+this.num + " nom :"+ this.nom + " naissance : " + this.naissance;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(num);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Abonne other = (Abonne) obj;
+		return num == other.num;
 	}
 }

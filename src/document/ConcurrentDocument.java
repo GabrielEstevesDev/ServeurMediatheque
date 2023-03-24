@@ -1,5 +1,8 @@
 package document;
 
+import abonne.Abonne;
+import mediatheque.IDocument;
+
 public class ConcurrentDocument implements IDocument {
 	private IDocument monDoc;
 	

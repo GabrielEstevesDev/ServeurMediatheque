@@ -1,10 +1,8 @@
-package Mediatheque;
+package mediatheque;
 
-import java.util.ArrayList;
 import java.util.List;
-import document.Abonne;
-import document.DVD;
-import document.IDocument;
+
+import abonne.Abonne;
 
 public class Mediatheque {
 	private static List<Abonne> abos;

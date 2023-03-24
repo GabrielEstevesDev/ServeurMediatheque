@@ -1,11 +1,13 @@
 package document;
 
+import abonne.Abonne;
+
 public class DVD extends Document {
 	private boolean adulte;
 
 
-	public DVD(int numero, String titre, boolean adulte) {
-		super(numero,titre);
+	public DVD(int numero, String titre, boolean adulte, Abonne ab) {
+		super(numero,titre,ab);
 		this.adulte = adulte;
 	}
 

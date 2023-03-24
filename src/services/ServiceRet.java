@@ -1,4 +1,4 @@
-package Services;
+package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import Mediatheque.Mediatheque;
 import bserveur.ServiceAbstract;
 import bttp.bttp;
+import mediatheque.Mediatheque;
 
 public class ServiceRet extends ServiceAbstract{
 

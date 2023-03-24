@@ -3,14 +3,14 @@ package main;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import Mediatheque.Mediatheque;
-import Services.ServiceEmp;
-import Services.ServiceRes;
-import Services.ServiceRet;
+import abonne.Abonne;
+import bd.RequetesBD;
 import bserveur.Serveur;
-import db.requetes;
-import document.Abonne;
-import document.IDocument;
+import mediatheque.IDocument;
+import mediatheque.Mediatheque;
+import services.ServiceEmp;
+import services.ServiceRes;
+import services.ServiceRet;
 
 public class ServeurMediatheque {
 	private static int PORTRes = 3000;
@@ -18,8 +18,8 @@ public class ServeurMediatheque {
 	private static int PORTRet = 5000;
 	private static Mediatheque Med;
 		public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-			List<Abonne> ListAbo=requetes.getAllAbonne();
-			List<IDocument> ListDoc=requetes.getAllDocuments();
+			List<Abonne> ListAbo=RequetesBD.getAllAbonne();
+			List<IDocument> ListDoc=RequetesBD.getAllDocuments();
 			Mediatheque.setMediatheque(ListAbo, ListDoc);
 			new Thread(new Serveur(ServiceRes.class,PORTRes)).start();
 			new Thread(new Serveur(ServiceEmp.class,PORTEmp)).start();

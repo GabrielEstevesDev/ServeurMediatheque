@@ -1,13 +1,13 @@
-package db;
+package bd;
 import bttp.bttp;
-import document.Abonne;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import abonne.Abonne;
 
 class testRequetes {
 
@@ -16,7 +16,7 @@ class testRequetes {
 		//List<document.Document> s = requetes.getAllDocuments();
 		String s="Gabriel sans stage \naaaaa";
 		System.out.println(bttp.decoder(bttp.encoder(s)));
-		List<Abonne> a = requetes.getAllAbonne();
+		List<Abonne> a = RequetesBD.getAllAbonne();
 		for(Abonne b:a) {
 			System.out.println(b);
 		}
@@ -38,7 +38,7 @@ class testRequetes {
 	
 	@Test
 	void test3(){
-		requetes.setEmprunteur(2, 2);
+		RequetesBD.setEmprunteur(2, 2);
 	}
 	
 	

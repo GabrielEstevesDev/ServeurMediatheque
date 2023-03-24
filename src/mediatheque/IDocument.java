@@ -1,4 +1,7 @@
-package document;
+package mediatheque;
+
+import abonne.Abonne;
+import document.RestrictionException;
 
 public interface IDocument {
 	int numero();
