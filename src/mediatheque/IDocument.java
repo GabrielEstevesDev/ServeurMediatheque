@@ -14,4 +14,6 @@ public interface IDocument {
 	void empruntPar(Abonne ab) throws RestrictionException;
 	//brief retour d’un document ou annulation d‘une réservation
 	void retour();
+	
+	void setSendMailTrue();
 }

@@ -41,10 +41,6 @@ class testRequetes {
 	void test3(){
 		RequetesBD.setEmprunteur(2, 2);
 	}*/
-	@Test
-	void test4() {
-		 ServiceRes.sendMail();
-	}
 	
 	
 

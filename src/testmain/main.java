@@ -13,9 +13,9 @@ import javax.mail.internet.MimeMessage;
 
 public class main {
 	public static void main(String[] args) {
-		final String username = "testjava17@outlook.com";
-		final String password = "Testjava*";
-		String to = "louis.lenouvel@eut.u-paris.fr";
+		final String username = "testjava053@gmail.com";
+		final String password = "zbaiykgsoqgdjxmn";
+		String to = "louis.lenouvel@etu.u-paris.fr";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -33,8 +33,8 @@ public class main {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("Sujet de l'email");
-			message.setText("Contenu de l'email");
+			message.setSubject("DVD de nouveau disponible dans notre médiathèque");
+			message.setText("Vous pouvez maintenant réserver le DVD.");
 			Transport.send(message);
 			System.out.println("Email envoyé avec succès");
 		} catch (MessagingException e) {

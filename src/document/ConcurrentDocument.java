@@ -52,4 +52,12 @@ public class ConcurrentDocument implements IDocument {
 	public String toString() {
 		return monDoc.toString();
 	}
+
+	@Override
+	public void setSendMailTrue() {
+		synchronized(monDoc) {
+			monDoc.setSendMailTrue();
+		}
+		
+	}
 }

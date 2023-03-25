@@ -55,11 +55,14 @@ public class ServiceRes extends ServiceAbstract {
 				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc));
 
 			} catch ( RestrictionException e) {
-				socketOut.println(bttp.encoder(e.getMessage()+"\nSi vous voulez recevoir une alerte quand le "+Document.class.getSimpleName()+" sera disponible ? Entrez oui."));
-				/*String rep =socketIn.readLine();
-				if(rep=="oui") {
-
-				}*/
+				socketOut.println(bttp.encoder(e.getMessage()+"\nSi vous voulez recevoir une alerte quand le "+Document.class.getSimpleName()+" sera disponible ? Entrez 1. Sinon entrez 0."));
+				String rep =socketIn.readLine();
+				if(rep.equals("1")) {
+					Mediatheque.getDoc(Integer.parseInt(numDoc)).setSendMailTrue();
+					socketOut.println(bttp.encoder("Vous recevrez un message quand le DVD sera de nouveau disponible"));
+				}
+				else
+					socketOut.println(bttp.encoder("Bien reçu, vous ne recevrez pas de message."));
 			}
 
 		} catch (IOException e) {
@@ -67,35 +70,6 @@ public class ServiceRes extends ServiceAbstract {
 			e.printStackTrace();
 		}
 
-	}
-	public static void sendMail() {
-		final String username = "testjava17@outlook.com";
-		final String password = "Testjava*";
-		String to = "louis.lenouvel@eut.u-paris.fr";
-
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-
-		Session session = Session.getInstance(props, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
-
-		try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(username));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("Sujet de l'email");
-			message.setText("Contenu de l'email");
-			Transport.send(message);
-			System.out.println("Email envoyé avec succès");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }
