@@ -1,5 +1,6 @@
 package bd;
 import bttp.bttp;
+import services.ServiceRes;
 
 import java.time.LocalTime;
 import java.util.Date;
@@ -11,7 +12,7 @@ import abonne.Abonne;
 
 class testRequetes {
 
-	@Test
+	/*@Test
 	void test() {
 		//List<document.Document> s = requetes.getAllDocuments();
 		String s="Gabriel sans stage \naaaaa";
@@ -33,14 +34,17 @@ class testRequetes {
         heure+=2;
         int minutes = heureCourante.getMinute();
         System.out.println("Heure courante : " + heure + ":" + minutes);
-
+       
 	}
 	
 	@Test
 	void test3(){
 		RequetesBD.setEmprunteur(2, 2);
+	}*/
+	@Test
+	void test4() {
+		 ServiceRes.sendMail();
 	}
-	
 	
 	
 

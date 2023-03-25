@@ -50,9 +50,6 @@ public class Document implements IDocument {
 			int minutes = reservationDate.getMinutes();
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déja réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
 		}
-		if(reserveur==ab) {
-			throw new RestrictionException("Vous avez déjà réservé ce "+ this.getClass().getSimpleName() +"");
-		}
 		this.setReserveur(ab);
 
 	}
