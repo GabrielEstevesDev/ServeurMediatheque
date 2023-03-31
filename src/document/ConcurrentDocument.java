@@ -56,14 +56,12 @@ public class ConcurrentDocument implements IDocument {
 	}
 
 	@Override
-<<<<<<< Updated upstream
 	public void setSendMailTrue() {
 		synchronized(monDoc) {
 			monDoc.setSendMailTrue();
 		}
 		
 	}
-=======
 	public Date dateRetour() {
 		synchronized (monDoc) {
 			// TODO Auto-generated method stub
@@ -84,5 +82,4 @@ public class ConcurrentDocument implements IDocument {
 		monDoc.setRetour();
 		
 	}
->>>>>>> Stashed changes
 }
