@@ -1,5 +1,7 @@
 package mediatheque;
 
+import java.util.Date;
+
 import abonne.Abonne;
 import document.RestrictionException;
 
@@ -14,6 +16,12 @@ public interface IDocument {
 	void empruntPar(Abonne ab) throws RestrictionException;
 	//brief retour d’un document ou annulation d‘une réservation
 	void retour();
+<<<<<<< Updated upstream
 	
 	void setSendMailTrue();
+=======
+	Date dateRetour();
+	void mauvaisEtat();
+	 void setRetour();
+>>>>>>> Stashed changes
 }

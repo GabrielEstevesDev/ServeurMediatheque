@@ -1,5 +1,7 @@
 package document;
 
+import java.util.Date;
+
 import abonne.Abonne;
 import mediatheque.IDocument;
 
@@ -54,10 +56,33 @@ public class ConcurrentDocument implements IDocument {
 	}
 
 	@Override
+<<<<<<< Updated upstream
 	public void setSendMailTrue() {
 		synchronized(monDoc) {
 			monDoc.setSendMailTrue();
 		}
 		
 	}
+=======
+	public Date dateRetour() {
+		synchronized (monDoc) {
+			// TODO Auto-generated method stub
+			return monDoc.dateRetour();
+		}
+	}
+
+	@Override
+	public void mauvaisEtat() {
+		synchronized (monDoc) {
+			monDoc.mauvaisEtat();
+		}
+		
+	}
+
+	@Override
+	public void setRetour() {
+		monDoc.setRetour();
+		
+	}
+>>>>>>> Stashed changes
 }

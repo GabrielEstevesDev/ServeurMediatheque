@@ -1,5 +1,6 @@
 package abonne;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ public class Abonne {
 	private int num;
 	private String nom;
 	private Date naissance;
+	private Date dateBannissement;
 	
 	public Abonne(int numero, String nom, Date naissance) {
 		this.num = numero;
@@ -49,5 +51,18 @@ public class Abonne {
 			return false;
 		Abonne other = (Abonne) obj;
 		return num == other.num;
+	}
+
+	public void banniMois() {
+		dateBannissement=new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateBannissement);
+		cal.add(Calendar.MONTH, 2);
+		dateBannissement=cal.getTime();
+		
+	}
+	
+	public Date getDateBan() {
+		return dateBannissement;
 	}
 }

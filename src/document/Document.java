@@ -1,5 +1,6 @@
 package document;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,11 +17,14 @@ public class Document implements IDocument {
 	private Abonne emprunteur;
 	private Abonne reserveur;
 	private Date reservationDate;
+	private Date empruntDate;
+	private boolean etat;
 	private Timer timer;
 	private boolean sendMailWhenAvailable;
 	public Document(int num,String titre, Abonne ab) {
 		this.numero=num;
 		this.titre = titre;
+		this.etat=true;
 		emprunteur=ab;
 		reserveur=null;
 		reservationDate = null;
@@ -44,7 +48,11 @@ public class Document implements IDocument {
 
 	@Override
 	public void reservationPour(Abonne ab) throws RestrictionException {
+<<<<<<< Updated upstream
 		if(emprunteur!=null && emprunteur.equals(ab))
+=======
+		if(emprunteur!=null && ab.equals(emprunteur))
+>>>>>>> Stashed changes
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
 		if(emprunteur!=null)
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
@@ -97,7 +105,11 @@ public class Document implements IDocument {
 
 	@Override
 	public void empruntPar(Abonne ab) throws RestrictionException {
+<<<<<<< Updated upstream
 		if(emprunteur!=null && emprunteur.equals(ab))
+=======
+		if(emprunteur!=null && ab.equals(emprunteur))
+>>>>>>> Stashed changes
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
 		if(reserveur!=null && reserveur!=ab) {
 			int heure = reservationDate.getHours()+2;
@@ -114,7 +126,15 @@ public class Document implements IDocument {
 		if(timer!=null)
 			timer.cancel();
 		this.emprunteur=ab;
+<<<<<<< Updated upstream
 		this.reserveur = null;
+=======
+		empruntDate = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(empruntDate);
+		cal.add(Calendar.MINUTE,1);
+		empruntDate = cal.getTime();
+>>>>>>> Stashed changes
 		RequetesBD.setEmprunteur(this.numero, ab.getId());
 	}
 
@@ -128,6 +148,7 @@ public class Document implements IDocument {
 		reserveur=null;		
 	}
 
+<<<<<<< Updated upstream
 	private void sendMail() {
 		if(this.sendMailWhenAvailable) {
 			Mediatheque.sendEmail(email,this.numero);
@@ -135,6 +156,22 @@ public class Document implements IDocument {
 		}
 	}
 
+=======
+	public void mauvaisEtat() {
+		this.etat=false;
+	}
+	
+	public void setRetour() {
+		Date today=new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(empruntDate);
+		cal.add(Calendar.MINUTE,1);
+		empruntDate = cal.getTime();
+	}
+	public Date dateRetour() {
+		return empruntDate;
+	}
+>>>>>>> Stashed changes
 	public String toString() {
 		return "numero : "+numero+" titre : "+titre;
 

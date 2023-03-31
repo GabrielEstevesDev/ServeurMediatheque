@@ -75,6 +75,7 @@ public class RequetesBD {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
+			System.out.println("aaaa");
 			String update = "UPDATE dvd SET emprunteur = " + numAb + " WHERE id = " + numDoc;
 			statement.executeUpdate(update);
 		} catch (SQLException e) {

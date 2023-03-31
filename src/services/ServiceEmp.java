@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import abonne.Abonne;
 import bserveur.ServiceAbstract;
@@ -35,7 +38,14 @@ public class ServiceEmp extends ServiceAbstract {
 				socketOut.println(bttp.encoder("Le numéro d'"+Abonne.class.getSimpleName() +"est incorrect"));
 				this.getSocket().close();
 			}
-			
+			Date today = new Date();
+			if(ab.getDateBan()!=null && ab.getDateBan().after(today)) {
+				Date date = ab.getDateBan();
+				GregorianCalendar calendar = new GregorianCalendar();
+				calendar.setTime(date);
+				socketOut.println(bttp.encoder("Vous êtes toujours bannis jusqu'au "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+"."));
+				this.getSocket().close();
+			}
 			socketOut.println(bttp.encoder("Quel document que vous voulez emprunté ? Saisissez son numéro."));
 			String numDoc =socketIn.readLine();
 			if(Mediatheque.getDoc(Integer.parseInt(numDoc))==null) {
@@ -44,7 +54,10 @@ public class ServiceEmp extends ServiceAbstract {
 			}
 			try {
 				Mediatheque.getDoc(Integer.parseInt(numDoc)).empruntPar(ab);
-				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc));
+				Date datemprunt=Mediatheque.getDoc(Integer.parseInt(numDoc)).dateRetour();
+				GregorianCalendar calendar = new GregorianCalendar();
+				calendar.setTime(datemprunt);
+				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc+"\nN'oubliez pas de le rendre avant le : "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+" à "+datemprunt.getHours()+":"+datemprunt.getMinutes()));
 				this.getSocket().close();
 			} catch ( RestrictionException e) {
 				socketOut.println(bttp.encoder(e.getMessage()));
