@@ -71,10 +71,9 @@ public class Mediatheque {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("DVD "+ numero +" de nouveau disponible dans notre médiathèque");
+			message.setSubject("DVD "+ numero +" de nouveau disponible dans notre médiathèque ! ");
 			message.setText("Vous pouvez maintenant réserver le DVD "+ numero +".");
 			Transport.send(message);
-			System.out.println("Email envoyé avec succès");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}

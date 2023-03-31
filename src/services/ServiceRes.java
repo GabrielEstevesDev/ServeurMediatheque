@@ -21,6 +21,7 @@ import bserveur.ServiceAbstract;
 import bttp.bttp;
 import document.Document;
 import document.RestrictionException;
+import mediatheque.IDocument;
 import mediatheque.Mediatheque;
 
 public class ServiceRes extends ServiceAbstract {
@@ -45,24 +46,33 @@ public class ServiceRes extends ServiceAbstract {
 			}
 			socketOut.println(bttp.encoder("Quel document que vous voulez reserver ? Saisissez le numéro."));
 			String numDoc =socketIn.readLine();
-			if(Mediatheque.getDoc(Integer.parseInt(numDoc))==null) {
+			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
+			if(doc==null) {
 				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+" n'existe pas."));
 				this.getSocket().close();
-
 			}
 			try {
 				Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
-				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc));
+				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le "+ IDocument.class.getSimpleName() +" "+numDoc));
 
 			} catch ( RestrictionException e) {
-				socketOut.println(bttp.encoder(e.getMessage()+"\nSi vous voulez recevoir une alerte quand le "+Document.class.getSimpleName()+" sera disponible ? Entrez 1. Sinon entrez 0."));
-				String rep =socketIn.readLine();
-				if(rep.equals("1")) {
-					Mediatheque.getDoc(Integer.parseInt(numDoc)).setSendMailTrue();
-					socketOut.println(bttp.encoder("Vous recevrez un message quand le DVD sera de nouveau disponible"));
+				String msgException = e.getMessage();
+//				System.out.println(ab);
+//				System.out.println(doc.emprunteur());
+//				System.out.println(doc.emprunteur()==ab || doc.reserveur()==ab);
+				if(doc.emprunteur()!=null && doc.emprunteur().equals(ab) || doc.reserveur()!=null && doc.reserveur().equals(ab)) {
+					socketOut.println(bttp.encoder(msgException));
 				}
-				else
-					socketOut.println(bttp.encoder("Bien reçu, vous ne recevrez pas de message."));
+				else {
+					socketOut.println(bttp.encoder(msgException+"\nSi vous voulez recevoir une alerte quand le "+ IDocument.class.getSimpleName()+" sera disponible ? Entrez 1. Sinon entrez 0."));
+					String rep =socketIn.readLine();
+					if(rep.equals("1")) {
+						Mediatheque.getDoc(Integer.parseInt(numDoc)).setSendMailTrue();
+						socketOut.println(bttp.encoder("Vous recevrez un message quand le DVD sera de nouveau disponible"));
+					}
+					else
+						socketOut.println(bttp.encoder("Bien reçu, vous ne recevrez pas de message."));
+				}
 			}
 
 		} catch (IOException e) {

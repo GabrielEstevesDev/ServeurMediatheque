@@ -61,6 +61,7 @@ public class Document implements IDocument {
 	}
 	
 	private void setReserveur(Abonne ab) {
+		assert(ab!=null);
 		this.reserveur = ab;
 		reservationDate = new Date();
 		planifierAnnulationReservation();
@@ -73,18 +74,19 @@ public class Document implements IDocument {
 	
 	@Override
 	public void setSendMailTrue() {
-		this.sendMailWhenAvailable = true;
-		
+		if(reserveur==null && emprunteur==null) {
+			this.sendMailWhenAvailable = true;
+			this.sendMail();
+		}
+		this.sendMailWhenAvailable=true;
 	}
 	private void annulerReservation() {
-		if(sendMailWhenAvailable)
-			Mediatheque.sendEmail(email,this.numero);
-		this.sendMailWhenAvailable = false;
+		this.sendMail();
 		this.reserveur = null;
 		reservationDate = null;
 		timer.cancel();
 		timer.purge();
-		System.out.println("La réservation a été annulée.");
+		
 	}
 
 	private class AnnulationReservation extends TimerTask {
@@ -95,7 +97,7 @@ public class Document implements IDocument {
 
 	@Override
 	public void empruntPar(Abonne ab) throws RestrictionException {
-		if(emprunteur.equals(ab))
+		if(emprunteur!=null && emprunteur.equals(ab))
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
 		if(reserveur!=null && reserveur!=ab) {
 			int heure = reservationDate.getHours()+2;
@@ -108,15 +110,29 @@ public class Document implements IDocument {
 	}
 
 	private void setEmprunteur(Abonne ab) {
+		assert(ab!=null);
+		if(timer!=null)
+			timer.cancel();
 		this.emprunteur=ab;
+		this.reserveur = null;
 		RequetesBD.setEmprunteur(this.numero, ab.getId());
 	}
 
 	@Override
 	public void retour() {
+		if(timer!=null)
+			timer.cancel();
+		this.sendMail();
 		RequetesBD.setEmprunteur(this.numero, null);
 		emprunteur=null;
 		reserveur=null;		
+	}
+
+	private void sendMail() {
+		if(this.sendMailWhenAvailable) {
+			Mediatheque.sendEmail(email,this.numero);
+			this.sendMailWhenAvailable = false;
+		}
 	}
 
 	public String toString() {

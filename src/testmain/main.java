@@ -1,44 +1,34 @@
 package testmain;
 
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class main {
 	public static void main(String[] args) {
-		final String username = "testjava053@gmail.com";
-		final String password = "zbaiykgsoqgdjxmn";
-		String to = "louis.lenouvel@etu.u-paris.fr";
+		Timer timer = new Timer();
 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
+		TimerTask task = new TimerTask() {
+		    public void run() {
+		        System.out.println("je me suis lancé");
+		    }
+		};
 
-		Session session = Session.getInstance(props, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
-
+		timer.cancel();
+		timer.purge();
 		try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(username));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("DVD de nouveau disponible dans notre médiathèque");
-			message.setText("Vous pouvez maintenant réserver le DVD.");
-			Transport.send(message);
-			System.out.println("Email envoyé avec succès");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		timer.schedule(task, 1000);
+		
+	
+
 	}
 }
