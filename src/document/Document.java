@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import bd.RequetesBD;
 import mediatheque.Abonne;
+import mediatheque.IDocument;
 import mediatheque.Mediatheque;
 
 public class Document implements IDocument {
@@ -145,20 +146,22 @@ public class Document implements IDocument {
 		emprunteur=null;
 		reserveur=null;		
 	}
+	@Override 
 	public void setRetour() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(empruntDate);
 		cal.add(Calendar.MINUTE,1);
 		empruntDate = cal.getTime();
 	}
+	@Override 
 	public Date dateRetour() {
 		return empruntDate;
 	}
 	@Override
-	public void mauvaisEtat() {
-		this.bonEtat = false;
+	public void setEtat(boolean b) {
+		this.bonEtat = b;
 	}
-
+	@Override 
 	public String toString() {
 		return "numero : "+numero+" titre : "+titre;
 	}

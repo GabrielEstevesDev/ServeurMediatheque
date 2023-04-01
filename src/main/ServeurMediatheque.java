@@ -5,8 +5,9 @@ import java.util.List;
 
 import bd.RequetesBD;
 import bserveur.Serveur;
+import document.ConcurrentDocument;
 import mediatheque.Abonne;
-import mediatheque.ConcurrentDocument;
+import mediatheque.IDocument;
 import mediatheque.Mediatheque;
 import services.ServiceEmp;
 import services.ServiceRes;
@@ -18,7 +19,7 @@ public class ServeurMediatheque {
 	private static int PORTRet = 5000;
 		public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 			List<Abonne> ListAbo=RequetesBD.getAllAbonne(); //on charge tous les abonnées
-			List<ConcurrentDocument> ListDoc=RequetesBD.getAllDocuments(); //on charge tous les documents
+			List<IDocument> ListDoc=RequetesBD.getAllDocuments(); //on charge tous les documents
 			Mediatheque.setMediatheque(ListAbo, ListDoc);
 			new Thread(new Serveur(ServiceRes.class,PORTRes)).start(); //lancement du service réservation
 			new Thread(new Serveur(ServiceEmp.class,PORTEmp)).start(); //lancement du service emprunt

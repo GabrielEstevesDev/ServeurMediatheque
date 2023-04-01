@@ -14,10 +14,10 @@ import javax.mail.internet.MimeMessage;
 
 public class Mediatheque {
 	private static List<Abonne> abos;
-	private static List<ConcurrentDocument> docs;
+	private static List<IDocument> docs;
 	
 	
-	public static void setMediatheque(List<Abonne> abos1,List<ConcurrentDocument> docs1) {
+	public static void setMediatheque(List<Abonne> abos1,List<IDocument> docs1) {
 		abos = abos1;
 		docs = docs1;
 	}
@@ -31,8 +31,8 @@ public class Mediatheque {
 		return null;
 	}
 
-	public static ConcurrentDocument getDoc(int numDoc) {
-		for(ConcurrentDocument doc :docs) {
+	public static IDocument getDoc(int numDoc) {
+		for(IDocument doc :docs) {
 			if(doc.numero()==numDoc) {
 				return doc;
 			}
@@ -42,7 +42,7 @@ public class Mediatheque {
 	
 	public static String afficherDocs() {
 		String s = "";
-		for(ConcurrentDocument doc: docs) {
+		for(IDocument doc: docs) {
 			s+=doc.toString()+"\n";
 		}
 		return s;
