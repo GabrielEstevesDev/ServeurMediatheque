@@ -85,4 +85,11 @@ public class ConcurrentDocument implements IDocument {
 			return monDoc.renduEnretard();
 		}
 	}
+
+	@Override
+	public boolean getBonEtat() {
+		synchronized (monDoc) {
+			return monDoc.getBonEtat();
+		}
+	}
 }

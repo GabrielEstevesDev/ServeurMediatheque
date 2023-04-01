@@ -172,6 +172,11 @@ public class Document implements IDocument {
 		return today.after(retourEmpruntDate); //nous retournons true si le document est rendu avec plus de deux semaine de retard
 	}
 
+	@Override
+	public boolean getBonEtat() {
+		return this.bonEtat;
+	}
+
 	
 	
 

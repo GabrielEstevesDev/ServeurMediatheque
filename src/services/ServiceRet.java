@@ -37,16 +37,19 @@ public class ServiceRet extends ServiceAbstract{
 				this.getSocket().close();
 			}
 			int num = Integer.parseInt(numDoc);
-			boolean ban=false;
-			// demande de l'état du document
-			socketOut.println(bttp.encoder("Dans quel état est votre "+doc.getClass().getSimpleName()+" ? Saisissez 1 si il est en bon état. 0 si il est en mauvais état."));
-			String etat =socketIn.readLine();
 			String msg = "Attention ! Vous êtes bannis 1 mois !";
-			if(etat.equals("0")) {//si mauvais
-				doc.mauvaisEtat(); //on met l'état du doc en mauvais état et on bannis l'abonne
-				msg+=" Vous avez rendu le "+doc.getClass().getSimpleName()+" en mauvaise état.";
-				ban=true;
+			boolean ban=false;
+			if (doc.getBonEtat()) {
+				// demande de l'état du document
+				socketOut.println(bttp.encoder("Dans quel état est votre "+doc.getClass().getSimpleName()+" ? Saisissez 1 si il est en bon état. 0 si il est en mauvais état."));
+				String etat =socketIn.readLine();
+				if(etat.equals("0")) {//si mauvais
+					doc.mauvaisEtat(); //on met l'état du doc en mauvais état et on bannis l'abonne
+					msg+=" Vous avez rendu le "+doc.getClass().getSimpleName()+" en mauvaise état.";
+					ban=true;
+				}
 			}
+			
 			
 			if(doc.renduEnretard()) { //si le rendu est en retard 
 				doc.emprunteur().banniMois(); //on bannis l'abonne 

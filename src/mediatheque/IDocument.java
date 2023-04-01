@@ -26,4 +26,6 @@ public interface IDocument {
 	
 	//return true si le document est rendu avec un retard de plus de 2 semaines
 	boolean renduEnretard();
+	//return true si le document est en bon etat
+	boolean getBonEtat();
 }
