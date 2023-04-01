@@ -13,6 +13,7 @@ import bttp.bttp;
 import document.Document;
 import document.RestrictionException;
 import mediatheque.Abonne;
+import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;
 
@@ -38,13 +39,11 @@ public class ServiceRes extends ServiceAbstract {
 				this.getSocket().close();
 			}
 			
-			Date today = new Date();
-			if(ab.getDateBan()!=null && ab.getDateBan().after(today)) {
-				Date date = ab.getDateBan();
-				GregorianCalendar calendar = new GregorianCalendar();
-				calendar.setTime(date);
-				socketOut.println(bttp.encoder("Vous êtes toujours bannis jusqu'au "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+"."));
-				this.getSocket().close();
+			try { //verifie si l'abonne n'est pas déjà bannis
+				ab.estBannis();
+			} catch (AbonneBanisException e1) {
+				socketOut.println(bttp.encoder(e1.getMessage()));
+				this.getSocket().close(); //il est toujours bannis alors nous le lui indiquons et fermons la communication
 			}
 			//demande du numéro de document pour le réserver
 			socketOut.println(bttp.encoder("Quel document que vous voulez reserver ? Saisissez le numéro."));
@@ -75,7 +74,7 @@ public class ServiceRes extends ServiceAbstract {
 					String rep =socketIn.readLine();
 					if(rep.equals("1")) {// si oui
 						//on met l'attribut recevoirMailQuandDisponible à true
-						Mediatheque.getDoc(Integer.parseInt(numDoc)).setSendMailTrue();
+						doc.setSendMailTrue();
 						//fermeture du service
 						socketOut.println(bttp.encoder("Vous recevrez un message quand le "+ doc.getClass().getSimpleName()+" sera de nouveau disponible"));
 					}

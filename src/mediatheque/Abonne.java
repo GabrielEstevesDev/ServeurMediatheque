@@ -2,7 +2,10 @@ package mediatheque;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
+
+import bttp.bttp;
 
 public class Abonne {
 	private int num;
@@ -49,22 +52,39 @@ public class Abonne {
 		return num == other.num;
 	}
 
-	public void banniMois() {
-		dateBannissement=new Date();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(dateBannissement);
-		cal.add(Calendar.MONTH, 2);
-		dateBannissement=cal.getTime();
+	public void banniMois() { //bannis l'abonne 1 mois
+		if(dateBannissement==null) { //si l'abonne n'est pas déjà bannis
+			dateBannissement=new Date();//on calcule la date d'aujourd'hui
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(dateBannissement);
+			cal.add(Calendar.MONTH, 1); //nous lui ajoutons 1 mois
+			dateBannissement=cal.getTime(); //nous l'attribuons à l'abonne 
+		}
+		
 		
 	}
 	
-	public Date getDateBan() {
+	public Date dateBannissement() {
 		return dateBannissement;
 	}
+	
 	
 	@Override 
 	public String toString() {
 		return "num : "+this.num + " nom :"+ this.nom + " naissance : " + this.naissance;
+	}
+
+	public void estBannis() throws AbonneBanisException {
+		Date today = new Date(); 
+		if(dateBannissement!=null && dateBannissement.after(today)) { //si la date de bannissement est toujours d'acualité
+			Date date = dateBannissement;
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(date); //nous renvoyons une erreur et indiquons que l'abonne est toujours bannis
+			throw new AbonneBanisException("Vous êtes toujours bannis jusqu'au "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+".");
+		}
+		else // sinon nous lui annullons son bannissement
+			dateBannissement=null;
+		
 	}
 
 }

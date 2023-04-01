@@ -7,7 +7,7 @@ import mediatheque.IDocument;
 
 public class ConcurrentDocument implements IDocument {
 	private IDocument monDoc;
-	
+	//classe nous permettant de synchronised tous les points critiques
 	public ConcurrentDocument (IDocument doc) {
 		this.monDoc=doc;
 	}
@@ -59,28 +59,30 @@ public class ConcurrentDocument implements IDocument {
 		
 	}
 	@Override 
-	public Date dateRetour() {
+	public Date dateRetouremprunt() {
 		synchronized (monDoc) {
-			return monDoc.dateRetour();
+			return monDoc.dateRetouremprunt();
 		}
 	}
 
 	@Override 
-	public void setEtat(boolean b) {
+	public void mauvaisEtat() {
 		synchronized (monDoc) {
-			monDoc.setEtat(b);
+			monDoc.mauvaisEtat();
 		}
 		
 	}
-	@Override 
-	public void setRetour() {
-		synchronized(monDoc) {
-			monDoc.setRetour();
-		}
-	}
+
 	
 	@Override 
 	public String toString() {
 		return monDoc.toString();
+	}
+
+	@Override
+	public boolean renduEnretard() {
+		synchronized(monDoc) {
+			return monDoc.renduEnretard();
+		}
 	}
 }

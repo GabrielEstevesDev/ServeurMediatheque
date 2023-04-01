@@ -17,7 +17,7 @@ public class Document implements IDocument {
 	private Abonne emprunteur;
 	private Abonne reserveur;
 	private Date reservationDate; //date de réservation
-	private Date empruntDate; // date de l'emprunt
+	private Date retourEmpruntDate; // date de retour de  l'emprunt
 	private boolean bonEtat; //bon ou mauvais état du document
 	private Timer timerReservation; // timer lancé lors d'une réservation
 	private boolean sendMailWhenAvailable; //quand document disponible envoi d'un mail
@@ -128,11 +128,11 @@ public class Document implements IDocument {
 			timerReservation.cancel(); //on l'arrête car il est devenu indisponible jusqu'au retour
 		this.emprunteur=ab;
 		this.reserveur = null; 
-		empruntDate = new Date();
+		retourEmpruntDate = new Date(); //nous utilisons la date d'aujourd'hui
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(empruntDate);
-		cal.add(Calendar.MINUTE,1);
-		empruntDate = cal.getTime();
+		cal.setTime(retourEmpruntDate);
+		cal.add(Calendar.MINUTE,1); // nous lui ajoutons 1 semaines pour indiquer à l'abonne le délai restant
+		retourEmpruntDate = cal.getTime();
 		RequetesBD.setEmprunteur(this.numero, ab.getId()); // on met à jour la base de données
 	}
 	
@@ -147,23 +147,29 @@ public class Document implements IDocument {
 		reserveur=null;		
 	}
 	@Override 
-	public void setRetour() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(empruntDate);
-		cal.add(Calendar.MINUTE,1);
-		empruntDate = cal.getTime();
-	}
-	@Override 
-	public Date dateRetour() {
-		return empruntDate;
+	public Date dateRetouremprunt() {
+		return retourEmpruntDate;
 	}
 	@Override
-	public void setEtat(boolean b) {
-		this.bonEtat = b;
+	public void mauvaisEtat() {
+		if(this.bonEtat) { //si le document était encore en bon etat
+			this.bonEtat = false;  //on indique que le document est en mauvais état
+			this.emprunteur.banniMois();// on bannit l'abonné pendant 1 mois
+		}
 	}
 	@Override 
 	public String toString() {
 		return "numero : "+numero+" titre : "+titre;
+	}
+
+	@Override
+	public boolean renduEnretard() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(retourEmpruntDate); // nous recuperons la date de rendu initiale
+		cal.add(Calendar.MINUTE,1); // nous lui ajoutons 2 semaines suplémentaires
+		retourEmpruntDate = cal.getTime();
+		Date today = new Date();
+		return today.after(retourEmpruntDate); //nous retournons true si le document est rendu avec plus de deux semaine de retard
 	}
 
 	

@@ -13,7 +13,7 @@ import mediatheque.Abonne;
 import mediatheque.IDocument;
 
 public class RequetesBD {
-
+	//Méthode qui retourne tous les documents de la médiathèque
 	public static List<IDocument> getAllDocuments() {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
@@ -35,6 +35,7 @@ public class RequetesBD {
 		}
 		return null;
 	}
+	//Méthode qui retourne une l'abonne avec l'id égale à i
 	public static Abonne selectAbonne(int i) {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
@@ -45,6 +46,8 @@ public class RequetesBD {
 			while (resultSet.next()) {
 				a =new Abonne(resultSet.getInt(1), resultSet.getString(2),resultSet.getDate(3) );
 			}
+			resultSet.close();
+			statement.close();
 			return a;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -52,6 +55,8 @@ public class RequetesBD {
 		}
 		return null;
 	}
+	
+	//Méthode qui retourne tous les abonnes de la médiathèque
 	public static List<Abonne> getAllAbonne() {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
@@ -63,6 +68,8 @@ public class RequetesBD {
 				Abonne a =new Abonne(resultSet.getInt(1), resultSet.getString(2),resultSet.getDate(3) );
 				L.add(a);
 			}
+			resultSet.close();
+			statement.close();
 			return L;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -70,14 +77,16 @@ public class RequetesBD {
 		}
 		return null;
 	}
-
+	
+	
+	//Méthode qui modifie l'emprunteur d'un document spécifié
 	public static void setEmprunteur(int numDoc, Integer numAb) {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
-			System.out.println("aaaa");
 			String update = "UPDATE dvd SET emprunteur = " + numAb + " WHERE id = " + numDoc;
 			statement.executeUpdate(update);
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

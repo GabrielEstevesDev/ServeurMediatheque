@@ -18,9 +18,12 @@ public interface IDocument {
 	//attribut à true pour envoyer mail à un utilisateur quand le document sera disponbile
 	void setSendMailTrue();
 	
-	Date dateRetour();
+	//retourne la date de retour attendu pour le document
+	Date dateRetouremprunt();
 	
-	void setEtat(boolean b);
+	//attribut à false le boolean bonetat du document
+	void mauvaisEtat();
 	
-	void setRetour();
+	//return true si le document est rendu avec un retard de plus de 2 semaines
+	boolean renduEnretard();
 }

@@ -12,6 +12,7 @@ import bserveur.ServiceAbstract;
 import bttp.bttp;
 import document.RestrictionException;
 import mediatheque.Abonne;
+import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;
 
@@ -37,14 +38,11 @@ public class ServiceEmp extends ServiceAbstract {
 				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect"));
 				this.getSocket().close(); //on arrête le service
 			}
-			
-			Date today = new Date(); 
-			if(ab.getDateBan()!=null && ab.getDateBan().after(today)) {
-				Date date = ab.getDateBan();
-				GregorianCalendar calendar = new GregorianCalendar();
-				calendar.setTime(date);
-				socketOut.println(bttp.encoder("Vous êtes toujours bannis jusqu'au "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+"."));
-				this.getSocket().close();
+			try { //verifie si l'abonne n'est pas déjà bannis
+				ab.estBannis();
+			} catch (AbonneBanisException e1) {
+				socketOut.println(bttp.encoder(e1.getMessage()));
+				this.getSocket().close(); //il est toujours bannis alors nous le lui indiquons et fermons la communication
 			}
 			//Demande du numéro de document
 			socketOut.println(bttp.encoder("Quel document vous voulez emprunté ? Saisissez son numéro."));
@@ -56,7 +54,7 @@ public class ServiceEmp extends ServiceAbstract {
 			}
 			try {
 				doc.empruntPar(ab);//emprunt du document
-				Date datemprunt=doc.dateRetour(); //récupération de la date max de retour
+				Date datemprunt=doc.dateRetouremprunt(); //récupération de la date max de retour
 				GregorianCalendar calendar = new GregorianCalendar(); 
 				calendar.setTime(datemprunt); //pour que l'utilisateur sache quand il doit rendre le document
 				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le "+ doc.getClass().getSimpleName() +" "+numDoc+"\nN'oubliez pas de le rendre avant le : "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+" à "+datemprunt.getHours()+":"+datemprunt.getMinutes()));
