@@ -32,7 +32,7 @@ public class ServiceEmp extends ServiceAbstract {
 			
 			//Demande du numéro d'abonné
 			socketOut.println(bttp.encoder(Mediatheque.afficherDocs()+"\nQuel est votre numéro d'abonné ?"));
-			String num =socketIn.readLine();
+			String num =bttp.decoder(socketIn.readLine());
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
 			if(ab==null) {//si ab == null
 				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect"));
@@ -46,7 +46,7 @@ public class ServiceEmp extends ServiceAbstract {
 			}
 			//Demande du numéro de document
 			socketOut.println(bttp.encoder("Quel document vous voulez emprunté ? Saisissez son numéro."));
-			String numDoc =socketIn.readLine();
+			String numDoc =bttp.decoder(socketIn.readLine());
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			if(doc==null) {//si doc null
 				socketOut.println(bttp.encoder("Ce "+doc.getClass().getSimpleName()+"n'existe pas"));

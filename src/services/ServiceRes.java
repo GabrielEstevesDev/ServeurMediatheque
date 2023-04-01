@@ -31,7 +31,7 @@ public class ServiceRes extends ServiceAbstract {
 			
 			//demande du numéro d'abonné
 			socketOut.println(bttp.encoder(Mediatheque.afficherDocs()+"\nQuel est votre numéro d'abonné ?"));
-			String num =socketIn.readLine();
+			String num =bttp.decoder(socketIn.readLine());
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
 			if(ab==null) {
 				socketOut.println(bttp.encoder("Le numéro d'abonné est incorrect."));
@@ -47,7 +47,7 @@ public class ServiceRes extends ServiceAbstract {
 			}
 			//demande du numéro de document pour le réserver
 			socketOut.println(bttp.encoder("Quel document que vous voulez reserver ? Saisissez le numéro."));
-			String numDoc =socketIn.readLine();
+			String numDoc =bttp.decoder(socketIn.readLine());
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			if(doc==null) {
 				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+" n'existe pas."));
@@ -71,7 +71,7 @@ public class ServiceRes extends ServiceAbstract {
 				else {//sinon
 					//on lui demande si il veut recevoir un mail quand il sera disponible
 					socketOut.println(bttp.encoder(msgException+"\nSi vous voulez recevoir une alerte quand le "+ doc.getClass().getSimpleName()+" sera disponible ? Entrez 1. Sinon entrez 0."));
-					String rep =socketIn.readLine();
+					String rep =bttp.decoder(socketIn.readLine());
 					if(rep.equals("1")) {// si oui
 						//on met l'attribut recevoirMailQuandDisponible à true
 						doc.setSendMailTrue();
