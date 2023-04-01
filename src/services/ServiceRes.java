@@ -17,12 +17,12 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import abonne.Abonne;
 import bserveur.ServiceAbstract;
 import bttp.bttp;
 import document.Document;
+import document.IDocument;
 import document.RestrictionException;
-import mediatheque.IDocument;
+import mediatheque.Abonne;
 import mediatheque.Mediatheque;
 
 public class ServiceRes extends ServiceAbstract {
@@ -61,14 +61,11 @@ public class ServiceRes extends ServiceAbstract {
 				this.getSocket().close();
 			}
 			try {
-				Mediatheque.getDoc(Integer.parseInt(numDoc)).reservationPour(ab);
+				doc.reservationPour(ab);
 				socketOut.println(bttp.encoder("La réservation à bien été effectué pour le "+ IDocument.class.getSimpleName() +" "+numDoc));
 
 			} catch ( RestrictionException e) {
 				String msgException = e.getMessage();
-//				System.out.println(ab);
-//				System.out.println(doc.emprunteur());
-//				System.out.println(doc.emprunteur()==ab || doc.reserveur()==ab);
 				if(doc.emprunteur()!=null && doc.emprunteur().equals(ab) || doc.reserveur()!=null && doc.reserveur().equals(ab)) {
 					socketOut.println(bttp.encoder(msgException));
 				}

@@ -1,4 +1,4 @@
-package abonne;
+package mediatheque;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +14,7 @@ public class Abonne {
 		this.num = numero;
 		this.nom=nom;
 		this.naissance=naissance;
+		this.dateBannissement = null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -31,18 +32,13 @@ public class Abonne {
 		return num;
 	}
 	
-	@Override 
-	public String toString() {
-		return "num : "+this.num + " nom :"+ this.nom + " naissance : " + this.naissance;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(num);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) { // return true si le numéro est le même
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -65,4 +61,10 @@ public class Abonne {
 	public Date getDateBan() {
 		return dateBannissement;
 	}
+	
+	@Override 
+	public String toString() {
+		return "num : "+this.num + " nom :"+ this.nom + " naissance : " + this.naissance;
+	}
+
 }

@@ -1,9 +1,8 @@
-package mediatheque;
+package document;
 
 import java.util.Date;
 
-import abonne.Abonne;
-import document.RestrictionException;
+import mediatheque.Abonne;
 
 public interface IDocument {
 	int numero();
@@ -20,5 +19,5 @@ public interface IDocument {
 	void setSendMailTrue();
 	Date dateRetour();
 	void mauvaisEtat();
-	 void setRetour();
+	void setRetour();
 }

@@ -9,11 +9,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import abonne.Abonne;
 import bserveur.ServiceAbstract;
 import bttp.bttp;
 import document.Document;
 import document.RestrictionException;
+import mediatheque.Abonne;
+import mediatheque.ConcurrentDocument;
 import mediatheque.Mediatheque;
 
 public class ServiceEmp extends ServiceAbstract {
@@ -30,13 +31,14 @@ public class ServiceEmp extends ServiceAbstract {
 			
 			PrintWriter socketOut = new PrintWriter (this.getSocket().getOutputStream ( ), true);
 			
+			//Demande du numéro d'abonné
 			socketOut.println(bttp.encoder(Mediatheque.afficherDocs()+"\nQuel est votre numéro d'abonné ?"));
 			String num =socketIn.readLine();
 		
 			Abonne ab=Mediatheque.getAbo(Integer.parseInt(num));
-			if(ab==null) {
+			if(ab==null) {//si ab == null
 				socketOut.println(bttp.encoder("Le numéro d'"+Abonne.class.getSimpleName() +"est incorrect"));
-				this.getSocket().close();
+				this.getSocket().close(); //on arrête le service
 			}
 			Date today = new Date();
 			if(ab.getDateBan()!=null && ab.getDateBan().after(today)) {
@@ -46,15 +48,17 @@ public class ServiceEmp extends ServiceAbstract {
 				socketOut.println(bttp.encoder("Vous êtes toujours bannis jusqu'au "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+"."));
 				this.getSocket().close();
 			}
-			socketOut.println(bttp.encoder("Quel document que vous voulez emprunté ? Saisissez son numéro."));
+			//Demande du numéro de document
+			socketOut.println(bttp.encoder("Quel document vous voulez emprunté ? Saisissez son numéro."));
 			String numDoc =socketIn.readLine();
-			if(Mediatheque.getDoc(Integer.parseInt(numDoc))==null) {
+			ConcurrentDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
+			if(doc==null) {//si doc null
 				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+"n'existe pas"));
-				this.getSocket().close();
+				this.getSocket().close();//on arrête le service
 			}
 			try {
-				Mediatheque.getDoc(Integer.parseInt(numDoc)).empruntPar(ab);
-				Date datemprunt=Mediatheque.getDoc(Integer.parseInt(numDoc)).dateRetour();
+				doc.empruntPar(ab);
+				Date datemprunt=doc.dateRetour();
 				GregorianCalendar calendar = new GregorianCalendar();
 				calendar.setTime(datemprunt);
 				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le "+ Document.class.getSimpleName() +" "+numDoc+"\nN'oubliez pas de le rendre avant le : "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+" à "+datemprunt.getHours()+":"+datemprunt.getMinutes()));

@@ -5,30 +5,29 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import abonne.Abonne;
 import bd.RequetesBD;
-import mediatheque.IDocument;
+import mediatheque.Abonne;
 import mediatheque.Mediatheque;
 
 public class Document implements IDocument {
 	private final static String email = "testjava053@gmail.com";
-	private int numero;
+	private int numero; 
 	private String titre;
 	private Abonne emprunteur;
 	private Abonne reserveur;
-	private Date reservationDate;
-	private Date empruntDate;
-	private boolean etat;
-	private Timer timer;
-	private boolean sendMailWhenAvailable;
+	private Date reservationDate; //date de réservation
+	private Date empruntDate; // date de l'emprunt
+	private boolean bonEtat; //bon ou mauvais état du document
+	private Timer timerReservation; // timer lancé lors d'une réservation
+	private boolean sendMailWhenAvailable; //quand document disponible envoi d'un mail
 	public Document(int num,String titre, Abonne ab) {
 		this.numero=num;
 		this.titre = titre;
-		this.etat=true;
+		this.bonEtat=true;
 		emprunteur=ab;
 		reserveur=null;
 		reservationDate = null;
-		timer=null;
+		timerReservation=null;
 		sendMailWhenAvailable = false;
 	}
 
@@ -48,112 +47,105 @@ public class Document implements IDocument {
 
 	@Override
 	public void reservationPour(Abonne ab) throws RestrictionException {
-		if(emprunteur!=null && emprunteur.equals(ab))
-		if(emprunteur!=null && ab.equals(emprunteur))
+		if(emprunteur!=null && ab.equals(emprunteur)) // si emprunteur == emprunteur
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
-		if(emprunteur!=null)
+		else if(emprunteur!=null) // si déja emprunté
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
-		if(reserveur!=null && reserveur!=ab) {
+		else if(reserveur!=null && ab.equals(reserveur)) {
+			throw new RestrictionException("Vous avez déjà réserver ce "+ this.getClass().getSimpleName());
+		}
+		else if(reserveur!=null && reserveur!=ab) { // si réservé par un autre abonné
 			int heure = reservationDate.getHours()+2;
 			int minutes = reservationDate.getMinutes();
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déja réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
 		}
-		if(reserveur!=null && reserveur==ab) {
-			throw new RestrictionException("Vous avez déjà réserver ce "+ this.getClass().getSimpleName());
-		}
-		this.setReserveur(ab);
-
+		this.setReserveur(ab); // sinon on sauvegarde le reserveur
 	}
 	
 	private void setReserveur(Abonne ab) {
 		assert(ab!=null);
 		this.reserveur = ab;
-		reservationDate = new Date();
-		planifierAnnulationReservation();
+		reservationDate = new Date(); //on sauvegarde la date de réservation
+		planifierAnnulationReservation(); // lancement du timer de 2h
 	}
 
 	private void planifierAnnulationReservation() {
-		timer = new Timer();
-		timer.schedule(new AnnulationReservation(),30 * 1000); // Annuler la réservation après 1 heure (120 min * 60 sec * 1000 ms)
+		timerReservation = new Timer();
+		timerReservation.schedule(new AnnulationReservation(),30 * 1000); // Annuler la réservation après 1 heure (120 min * 60 sec * 1000 ms)
 	}
 	
-	@Override
-	public void setSendMailTrue() {
-		if(reserveur==null && emprunteur==null) {
-			this.sendMailWhenAvailable = true;
-			this.sendMail();
-		}
-		this.sendMailWhenAvailable=true;
-	}
-	private void annulerReservation() {
-		this.sendMail();
-		this.reserveur = null;
-		reservationDate = null;
-		timer.cancel();
-		timer.purge();
-		
-	}
-
 	private class AnnulationReservation extends TimerTask {
 		public void run() {
 			annulerReservation();
 		}
 	}
+	
+	private void annulerReservation() {
+		this.sendMail();
+		this.reserveur = null;
+		reservationDate = null;
+		timerReservation.cancel();
+		timerReservation.purge();
+	}
+	@Override
+	public void setSendMailTrue() {
+		if(reserveur==null && emprunteur==null) { 
+			this.sendMailWhenAvailable = true;
+			this.sendMail(); // car ça veut dire qu'entre le temps de réponse de l'utilisateur, le doc est devenu disponible
+		}
+		else this.sendMailWhenAvailable=true; // sinon on met la variable à true et on attend que le doc devienne disponible
+	}
+	
+	private void sendMail() {
+		if(this.sendMailWhenAvailable){// si l'utilisateur attend un mail {
+			Mediatheque.sendEmail(email,this.numero); // on l'envoit
+			this.sendMailWhenAvailable = false; 
+		}
+	}	
+	
+
+	
 
 	@Override
 	public void empruntPar(Abonne ab) throws RestrictionException {
-		if(emprunteur!=null && emprunteur.equals(ab))
-		if(emprunteur!=null && ab.equals(emprunteur))
+		if(emprunteur!=null && ab.equals(emprunteur))// si ab l'a déjà emprunté
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
-		if(reserveur!=null && reserveur!=ab) {
+		else if(emprunteur!=null && !ab.equals(emprunteur))// si il est déja emprunté
+			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
+		else if(reserveur!=null && !ab.equals(reserveur)) { // si il est réservé par un autre ab
 			int heure = reservationDate.getHours()+2;
 			int minutes = reservationDate.getMinutes();
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déja réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
 		}
-		if(emprunteur!=null)
-			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
-		this.setEmprunteur(ab);
+		// sinon (si il l'a réservé ou qu'il n'est pas réservé)
+		this.setEmprunteur(ab); 
 	}
 
 	private void setEmprunteur(Abonne ab) {
 		assert(ab!=null);
-		if(timer!=null)
-			timer.cancel();
+		if(timerReservation!=null)// si le timer est lancé
+			timerReservation.cancel(); //on l'arrête car il est devenu indisponible jusqu'au retour
 		this.emprunteur=ab;
-		this.reserveur = null;
+		this.reserveur = null; 
 		empruntDate = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(empruntDate);
 		cal.add(Calendar.MINUTE,1);
 		empruntDate = cal.getTime();
-		RequetesBD.setEmprunteur(this.numero, ab.getId());
+		RequetesBD.setEmprunteur(this.numero, ab.getId()); // on met à jour la base de données
 	}
+	
 
 	@Override
 	public void retour() {
-		if(timer!=null)
-			timer.cancel();
-		this.sendMail();
-		RequetesBD.setEmprunteur(this.numero, null);
+		if(timerReservation!=null) //si le timer est lancé
+			timerReservation.cancel(); // on l'arrête
+		this.sendMail(); // on envoit le mail si il est devenu disponible
+		RequetesBD.setEmprunteur(this.numero, null); // on met à jour la base de données
 		emprunteur=null;
 		reserveur=null;		
 	}
-
-
-	private void sendMail() {
-		if(this.sendMailWhenAvailable) {
-			Mediatheque.sendEmail(email,this.numero);
-			this.sendMailWhenAvailable = false;
-		}
-	}
-
-
-	public void mauvaisEtat() {
-		this.etat=false;
-	}
-	
 	public void setRetour() {
-		Date today=new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(empruntDate);
 		cal.add(Calendar.MINUTE,1);
@@ -162,12 +154,16 @@ public class Document implements IDocument {
 	public Date dateRetour() {
 		return empruntDate;
 	}
+	@Override
+	public void mauvaisEtat() {
+		this.bonEtat = false;
+	}
 
 	public String toString() {
 		return "numero : "+numero+" titre : "+titre;
-
 	}
 
+	
 	
 
 

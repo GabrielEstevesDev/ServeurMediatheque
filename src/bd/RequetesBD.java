@@ -7,23 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import abonne.Abonne;
-import document.ConcurrentDocument;
 import document.DVD;
-import mediatheque.IDocument;
+import mediatheque.Abonne;
+import mediatheque.ConcurrentDocument;
 
 public class RequetesBD {
 
-	public static List<IDocument> getAllDocuments() {
+	public static List<ConcurrentDocument> getAllDocuments() {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
 			String selectSql = "SELECT * FROM dvd";
 			ResultSet resultSet = statement.executeQuery(selectSql);
-			List<IDocument> L=new ArrayList<IDocument>();
+			List<ConcurrentDocument> L=new ArrayList<ConcurrentDocument>();
 			while (resultSet.next()) {
 				Abonne ab=selectAbonne(resultSet.getInt(4));
-				IDocument a =new ConcurrentDocument(new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), ab));
+				ConcurrentDocument a =new ConcurrentDocument(new DVD(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), ab));
 				L.add(a);
 			}
 			resultSet.close();
@@ -83,9 +82,9 @@ public class RequetesBD {
 		}
 	}
 
-	public void closeConnexion() throws SQLException {
+	public static void closeConnexion() throws SQLException {
 		ConnexionBD.close();
-
 	}
+	
 
 }

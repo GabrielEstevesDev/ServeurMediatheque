@@ -1,9 +1,9 @@
-package document;
+package mediatheque;
 
 import java.util.Date;
 
-import abonne.Abonne;
-import mediatheque.IDocument;
+import document.IDocument;
+import document.RestrictionException;
 
 public class ConcurrentDocument implements IDocument {
 	private IDocument monDoc;
@@ -64,12 +64,11 @@ public class ConcurrentDocument implements IDocument {
 	}
 	public Date dateRetour() {
 		synchronized (monDoc) {
-			// TODO Auto-generated method stub
 			return monDoc.dateRetour();
 		}
 	}
 
-	@Override
+	
 	public void mauvaisEtat() {
 		synchronized (monDoc) {
 			monDoc.mauvaisEtat();
@@ -77,9 +76,10 @@ public class ConcurrentDocument implements IDocument {
 		
 	}
 
-	@Override
+
 	public void setRetour() {
-		monDoc.setRetour();
-		
+		synchronized(monDoc) {
+			monDoc.setRetour();
+		}
 	}
 }
