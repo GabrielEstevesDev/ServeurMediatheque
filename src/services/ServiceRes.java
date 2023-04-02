@@ -5,12 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import bserveur.ServiceAbstract;
 import bttp.bttp;
-import documentAbstract.Document;
 import mediatheque.Abonne;
 import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
