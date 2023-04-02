@@ -11,11 +11,11 @@ import java.util.GregorianCalendar;
 import bserveur.ServiceAbstract;
 import bttp.bttp;
 import document.Document;
-import document.RestrictionException;
 import mediatheque.Abonne;
 import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;
+import mediatheque.RestrictionException;
 
 public class ServiceRes extends ServiceAbstract {
 	public ServiceRes(Socket socketCotéServeur) {

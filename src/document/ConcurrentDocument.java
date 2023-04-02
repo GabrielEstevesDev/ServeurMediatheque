@@ -4,6 +4,7 @@ import java.util.Date;
 
 import mediatheque.Abonne;
 import mediatheque.IDocument;
+import mediatheque.RestrictionException;
 
 public class ConcurrentDocument implements IDocument {
 	private IDocument monDoc;
@@ -19,12 +20,16 @@ public class ConcurrentDocument implements IDocument {
 
 	@Override
 	public Abonne emprunteur() {
-		return monDoc.emprunteur();
+		synchronized (monDoc) {
+			return monDoc.emprunteur();
+		}
 	}
 
 	@Override
 	public Abonne reserveur() {
-		return monDoc.reserveur();
+		synchronized (monDoc) {
+			return monDoc.reserveur();
+		}
 	}
 
 	@Override

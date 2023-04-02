@@ -2,8 +2,6 @@ package mediatheque;
 
 import java.util.Date;
 
-import document.RestrictionException;
-
 public interface IDocument {
 	int numero();
 	//return null si pas emprunté ou pas réservé

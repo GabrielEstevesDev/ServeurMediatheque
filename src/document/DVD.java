@@ -1,6 +1,7 @@
 package document;
 
 import mediatheque.Abonne;
+import mediatheque.RestrictionException;
 
 public class DVD extends Document {
 	private boolean pourAdulte;

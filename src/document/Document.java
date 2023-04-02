@@ -9,9 +9,9 @@ import bd.RequetesBD;
 import mediatheque.Abonne;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;
+import mediatheque.RestrictionException;
 
 public class Document implements IDocument {
-	private final static String email = "testjava053@gmail.com";
 	private int numero; 
 	private String titre;
 	private Abonne emprunteur;
@@ -99,7 +99,7 @@ public class Document implements IDocument {
 	
 	private void sendMail() {
 		if(this.sendMailWhenAvailable){// si l'utilisateur attend un mail {
-			Mediatheque.sendEmail(email,this.numero); // on l'envoit
+			Mediatheque.sendEmail(this.numero); // on l'envoit
 			this.sendMailWhenAvailable = false; 
 		}
 	}	

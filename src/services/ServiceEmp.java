@@ -10,11 +10,11 @@ import java.util.GregorianCalendar;
 
 import bserveur.ServiceAbstract;
 import bttp.bttp;
-import document.RestrictionException;
 import mediatheque.Abonne;
 import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;
+import mediatheque.RestrictionException;
 
 public class ServiceEmp extends ServiceAbstract {
 
