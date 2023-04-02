@@ -49,7 +49,7 @@ public class ServiceEmp extends ServiceAbstract {
 			String numDoc =bttp.decoder(socketIn.readLine());
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			if(doc==null) {//si doc null
-				socketOut.println(bttp.encoder("Ce "+doc.getClass().getSimpleName()+"n'existe pas"));
+				socketOut.println(bttp.encoder("Ce document n'existe pas"));
 				this.getSocket().close();//on arrête le service
 			}
 			try {
@@ -57,7 +57,7 @@ public class ServiceEmp extends ServiceAbstract {
 				Date datemprunt=doc.dateRetouremprunt(); //récupération de la date max de retour
 				GregorianCalendar calendar = new GregorianCalendar(); 
 				calendar.setTime(datemprunt); //pour que l'utilisateur sache quand il doit rendre le document
-				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le "+ doc.getClass().getSimpleName() +" "+numDoc+"\nN'oubliez pas de le rendre avant le : "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+" à "+datemprunt.getHours()+":"+datemprunt.getMinutes()));
+				socketOut.println(bttp.encoder("L'emprunt à bien été effectué pour le document "+numDoc+"\nN'oubliez pas de le rendre avant le : "+calendar.get(GregorianCalendar.DAY_OF_MONTH)+"/"+(calendar.get(GregorianCalendar.MONTH)+1)+"/"+calendar.get(GregorianCalendar.YEAR)+" à "+datemprunt.getHours()+":"+datemprunt.getMinutes()));
 				this.getSocket().close();
 			} catch ( RestrictionException e) {
 				//affichage du message d'erreur lors de l'emprunt

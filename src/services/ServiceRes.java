@@ -52,7 +52,7 @@ public class ServiceRes extends ServiceAbstract {
 			String numDoc =bttp.decoder(socketIn.readLine());
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			if(doc==null) {
-				socketOut.println(bttp.encoder("Ce "+Document.class.getSimpleName()+" n'existe pas."));
+				socketOut.println(bttp.encoder("Ce document n'existe pas."));
 				//on arrête le service
 				this.getSocket().close();
 				return;
@@ -61,7 +61,7 @@ public class ServiceRes extends ServiceAbstract {
 			try {
 				//réservation
 				doc.reservationPour(ab);
-				socketOut.println(bttp.encoder("La réservation a bien été effectué pour le "+ doc.getClass().getSimpleName() +" "+numDoc));
+				socketOut.println(bttp.encoder("La réservation a bien été effectué pour le document "+numDoc));
 
 			} catch ( RestrictionException e) {
 				//on récupère le message de l'exception
@@ -78,13 +78,13 @@ public class ServiceRes extends ServiceAbstract {
 				}
 				else {//sinon
 					//on lui demande si il veut recevoir un mail quand il sera disponible
-					socketOut.println(bttp.encoder(msgException+"\nSi vous voulez recevoir une alerte quand le "+ doc.getClass().getSimpleName()+" sera disponible ? Entrez 1. Sinon entrez 0."));
+					socketOut.println(bttp.encoder(msgException+"\nSi vous voulez recevoir une alerte quand le document sera disponible ? Entrez 1. Sinon entrez 0."));
 					String rep =bttp.decoder(socketIn.readLine());
 					if(rep.equals("1")) {// si oui
 						//on met l'attribut recevoirMailQuandDisponible à true
 						doc.setSendMailTrue();
 						//fermeture du service
-						socketOut.println(bttp.encoder("Vous recevrez un message quand le "+ doc.getClass().getSimpleName()+" sera de nouveau disponible"));
+						socketOut.println(bttp.encoder("Vous recevrez un message quand le document sera de nouveau disponible"));
 					}
 					else
 						//si non fermeture du service 

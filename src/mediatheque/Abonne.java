@@ -63,9 +63,7 @@ public class Abonne {
 		
 	}
 	
-	public Date dateBannissement() {
-		return dateBannissement;
-	}
+
 	
 	
 	@Override 

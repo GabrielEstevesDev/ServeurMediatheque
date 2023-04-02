@@ -32,13 +32,13 @@ public class ServiceRet extends ServiceAbstract{
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			
 			if(doc==null) { 
-				socketOut.println(bttp.encoder("Ce Document n'existe pas."));
+				socketOut.println(bttp.encoder("Ce document n'existe pas."));
 				//on arrête le service
 				this.getSocket().close();
 				return;
 			}
 			else if(doc.emprunteur()==null && doc.reserveur()==null){ //si pas de réserveur ou pas d'emprunteur
-				socketOut.println(bttp.encoder("Vous ne pouvez pas rendre un Document qui n'a pas été emprunté ou réservé."));
+				socketOut.println(bttp.encoder("Vous ne pouvez pas rendre un document qui n'a pas été emprunté ou réservé."));
 				this.getSocket().close();
 				return; //fin de la fonction
 			}
@@ -52,11 +52,11 @@ public class ServiceRet extends ServiceAbstract{
 			boolean ban=false;
 			if (doc.getBonEtat()) {
 				// demande de l'état du document
-				socketOut.println(bttp.encoder("Dans quel état est votre "+doc.getClass().getSimpleName()+" ? Saisissez 1 si il est en bon état. 0 si il est en mauvais état."));
+				socketOut.println(bttp.encoder("Dans quel état est votre document ? Saisissez 1 si il est en bon état. 0 si il est en mauvais état."));
 				String etat =socketIn.readLine();
 				if(etat.equals("0")) {//si mauvais
 					doc.mauvaisEtat(); //on met l'état du doc en mauvais état et on bannis l'abonne
-					msg+=" Vous avez rendu le "+doc.getClass().getSimpleName()+" en mauvaise état.";
+					msg+=" Vous avez rendu le document en mauvaise état.";
 					ban=true;
 				}
 			}
