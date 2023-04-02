@@ -13,8 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mediatheque {
-	//private static String destinataire = "jean-francois.brette@u-paris.fr";
-	private static String destinataire = "testjava053@gmail.com";
+	private static String destinataire = "jean-francois.brette@u-paris.fr";
 	private static List<Abonne> abos;
 	private static List<IDocument> docs;
 	

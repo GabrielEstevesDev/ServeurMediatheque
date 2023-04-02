@@ -133,7 +133,7 @@ public class Document implements IDocument {
 		retourEmpruntDate = new Date(); //nous utilisons la date d'aujourd'hui
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(retourEmpruntDate);
-		cal.add(Calendar.MINUTE,1); // nous lui ajoutons 1 semaines pour indiquer à l'abonne le délai restant
+		cal.add(Calendar.WEEK_OF_YEAR,1); // nous lui ajoutons 1 semaines pour indiquer à l'abonne le délai restant
 		retourEmpruntDate = cal.getTime();
 		RequetesBD.setEmprunteur(this.numero, ab.getId()); // on met à jour la base de données
 	}
@@ -168,7 +168,7 @@ public class Document implements IDocument {
 	public boolean renduEnretard() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(retourEmpruntDate); // nous recuperons la date de rendu initiale
-		cal.add(Calendar.MINUTE,1); // nous lui ajoutons 2 semaines suplémentaires
+		cal.add(Calendar.WEEK_OF_YEAR,2); // nous lui ajoutons 2 semaines suplémentaires
 		retourEmpruntDate = cal.getTime();
 		Date today = new Date();
 		return today.after(retourEmpruntDate); //nous retournons true si le document est rendu avec plus de deux semaine de retard
