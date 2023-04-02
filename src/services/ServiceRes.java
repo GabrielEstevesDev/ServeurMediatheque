@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
 
 import bserveur.ServiceAbstract;
 import bttp.bttp;
-import document.Document;
+import documentAbstract.Document;
 import mediatheque.Abonne;
 import mediatheque.AbonneBanisException;
 import mediatheque.IDocument;
@@ -61,7 +61,7 @@ public class ServiceRes extends ServiceAbstract {
 			try {
 				//réservation
 				doc.reservationPour(ab);
-				socketOut.println(bttp.encoder("La réservation a bien été effectué pour le document "+numDoc));
+				socketOut.println(bttp.encoder("La réservation a bien été effectué pour le document "+numDoc+ " pendant 2h."));
 
 			} catch ( RestrictionException e) {
 				//on récupère le message de l'exception

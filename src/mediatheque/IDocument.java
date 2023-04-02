@@ -13,13 +13,14 @@ public interface IDocument {
 	void empruntPar(Abonne ab) throws RestrictionException;
 	//brief retour d’un document ou annulation d‘une réservation
 	void retour();
+	
 	//attribut à true pour envoyer mail à un utilisateur quand le document sera disponbile
 	void setSendMailTrue();
 	
 	//retourne la date de retour attendu pour le document
 	Date dateRetouremprunt();
 	
-	//attribut à false le boolean bonetat du document
+	//attribut à false le boolean bon état du document
 	void mauvaisEtat();
 	
 	//return true si le document est rendu avec un retard de plus de 2 semaines

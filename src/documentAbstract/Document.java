@@ -1,4 +1,4 @@
-package document;
+package documentAbstract;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class Document implements IDocument {
 	private Date retourEmpruntDate; // date de retour de  l'emprunt
 	private boolean bonEtat; //bon ou mauvais état du document
 	private Timer timerReservation; // timer lancé lors d'une réservation
-	private boolean sendMailWhenAvailable; //quand document disponible envoi d'un mail
+	private boolean sendMailWhenAvailable; //quand == true et que le doc devient dispo on envoit un mail
 	public Document(int num,String titre, Abonne ab) {
 		this.numero=num;
 		this.titre = titre;
@@ -66,15 +66,15 @@ public class Document implements IDocument {
 	private void setReserveur(Abonne ab) {
 		assert(ab!=null);
 		this.reserveur = ab;
-		reservationDate = new Date(); //on sauvegarde la date de réservation
+		this.reservationDate = new Date(); //on sauvegarde la date de réservation
 		planifierAnnulationReservation(); // lancement du timer de 2h
 	}
 
 	private void planifierAnnulationReservation() {
 		timerReservation = new Timer();
-		timerReservation.schedule(new AnnulationReservation(),30 * 1000); // Annuler la réservation après 1 heure (120 min * 60 sec * 1000 ms)
+		timerReservation.schedule(new AnnulationReservation(),120*60 * 1000); // Annuler la réservation après 2 heure (120 min * 60 sec * 1000 ms)
 	}
-	
+	//au bout de 2h
 	private class AnnulationReservation extends TimerTask {
 		public void run() {
 			annulerReservation();
@@ -82,26 +82,28 @@ public class Document implements IDocument {
 	}
 	
 	private void annulerReservation() {
-		this.sendMail();
+		this.sendMail();//méthode gérant l'envoi du mail ou non
 		this.reserveur = null;
-		reservationDate = null;
+		this.reservationDate = null;
 		timerReservation.cancel();
 		timerReservation.purge();
 	}
 	@Override
+	//permet de mettre l'attribut à true et vérifie si le doc est devenu disponbile entre temps
 	public void setSendMailTrue() {
-		if(reserveur==null && emprunteur==null) { 
-			this.sendMailWhenAvailable = true;
-			this.sendMail(); // car ça veut dire qu'entre le temps de réponse de l'utilisateur, le doc est devenu disponible
+		this.sendMailWhenAvailable = true;
+		if(reserveur==null && emprunteur==null) { //if permettant de vérifier si le document est devenu disponible entre le temps de réponse de l'utilisateur
+		this.sendMail(); //doc disponible donc on appelle la méthode sendMail qui va obligatoirement envoyé le mail cette fois.
 		}
-		else this.sendMailWhenAvailable=true; // sinon on met la variable à true et on attend que le doc devienne disponible
 	}
 	
+	//méthode appelé quand l'état du doc devient disponible et décide si on envoit un mail ou non
 	private void sendMail() {
 		if(this.sendMailWhenAvailable){// si l'utilisateur attend un mail {
 			Mediatheque.sendEmail(this.numero); // on l'envoit
 			this.sendMailWhenAvailable = false; 
 		}
+		//sinon on ne fait rien
 	}	
 	
 
@@ -118,7 +120,7 @@ public class Document implements IDocument {
 			int minutes = reservationDate.getMinutes();
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
 		}
-		// sinon (si il l'a réservé ou qu'il n'est pas réservé)
+		// sinon (si il l'a réservé ou qu'il n'est pas réservé par un autre abonné)
 		this.setEmprunteur(ab); 
 	}
 

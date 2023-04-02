@@ -1,4 +1,4 @@
-package document;
+package documentAbstract;
 
 import java.util.Date;
 
@@ -79,10 +79,6 @@ public class ConcurrentDocument implements IDocument {
 	}
 
 	
-	@Override 
-	public String toString() {
-		return monDoc.toString();
-	}
 
 	@Override
 	public boolean renduEnretard() {
@@ -96,5 +92,11 @@ public class ConcurrentDocument implements IDocument {
 		synchronized (monDoc) {
 			return monDoc.getBonEtat();
 		}
+	}
+	
+
+	@Override 
+	public String toString() {
+		return monDoc.toString();
 	}
 }

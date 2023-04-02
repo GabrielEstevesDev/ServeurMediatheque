@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
  public class ConnexionBD {
 	private static Connection connect;
-	static { //block static pour la connexion à la base de donnée
+	static { //block static pour la connexion constante à la base de donnée
 		try {
 			Class.forName ("com.mysql.cj.jdbc.Driver");
 			try {

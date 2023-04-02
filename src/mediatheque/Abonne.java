@@ -40,6 +40,7 @@ public class Abonne {
 	}
 
 	@Override
+	//permet de tester si des abonnés sont égaux
 	public boolean equals(Object obj) { // return true si le numéro est le même
 		if (this == obj)
 			return true;

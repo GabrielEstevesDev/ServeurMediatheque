@@ -1,5 +1,6 @@
-package document;
+package documents;
 
+import documentAbstract.Document;
 import mediatheque.Abonne;
 import mediatheque.RestrictionException;
 

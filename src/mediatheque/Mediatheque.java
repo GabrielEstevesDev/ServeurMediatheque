@@ -13,11 +13,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mediatheque {
+	//private static String destinataire = "jean-francois.brette@u-paris.fr";
 	private static String destinataire = "testjava053@gmail.com";
 	private static List<Abonne> abos;
 	private static List<IDocument> docs;
 	
-	
+	//setter statique pour initialiser la médiathèque au lancement du serveur
 	public static void setMediatheque(List<Abonne> abos1,List<IDocument> docs1) {
 		abos = abos1;
 		docs = docs1;
@@ -48,7 +49,7 @@ public class Mediatheque {
 		}
 		return s;
 	}
-	
+	//méthode qui envoit le mail au destinataire 
 	public static void sendEmail(int numero) {
 		final String username = "testjava053@gmail.com";
 		final String password = "zbaiykgsoqgdjxmn";

@@ -7,9 +7,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/lenou/Downloads/activation-1.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/lenou/Downloads/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/lenou/Downloads/bttp.jar"/>
-	<classpathentry kind="lib" path="C:/Users/lenou/Downloads/mysql-connector-j-8.0.31.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mrest/Downloads/activation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mrest/Downloads/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mrest/OneDrive/Bureau/bttp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mrest/Downloads/mysql-connector-j-8.0.31.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mrest/OneDrive/Bureau/jar/bserveur.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

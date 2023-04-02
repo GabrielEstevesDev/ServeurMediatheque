@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import document.ConcurrentDocument;
-import document.DVD;
+import documentAbstract.ConcurrentDocument;
+import documents.DVD;
 import mediatheque.Abonne;
 import mediatheque.IDocument;
 
@@ -35,7 +35,7 @@ public class RequetesBD {
 		}
 		return null;
 	}
-	//Méthode qui retourne une l'abonne avec l'id égale à i
+	//Méthode qui retourne l'abonne avec l'id égale à i
 	public static Abonne selectAbonne(int i) {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
