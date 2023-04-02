@@ -48,14 +48,14 @@ public class Document implements IDocument {
 
 	@Override
 	public void reservationPour(Abonne ab) throws RestrictionException {
-		if(emprunteur!=null && ab.equals(emprunteur)) // si emprunteur == emprunteur
+		if(ab.equals(emprunteur)) // si emprunteur == ab
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
-		else if(emprunteur!=null) // si déja emprunté
+		else if(emprunteur!=null) // si déja emprunté par un autre abonné
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
-		else if(reserveur!=null && ab.equals(reserveur)) {
+		else if(ab.equals(reserveur)) {
 			throw new RestrictionException("Vous avez déjà réserver ce "+ this.getClass().getSimpleName());
 		}
-		else if(reserveur!=null && reserveur!=ab) { // si réservé par un autre abonné
+		else if(reserveur!=null) { // si réservé par un autre abonné
 			int heure = reservationDate.getHours()+2;
 			int minutes = reservationDate.getMinutes();
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déja réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
@@ -109,14 +109,14 @@ public class Document implements IDocument {
 
 	@Override
 	public void empruntPar(Abonne ab) throws RestrictionException {
-		if(emprunteur!=null && ab.equals(emprunteur))// si ab l'a déjà emprunté
+		if(ab.equals(emprunteur))// si ab l'a déjà emprunté
 			throw new RestrictionException("Vous avez déjà emprunté ce "+ this.getClass().getSimpleName());
-		else if(emprunteur!=null && !ab.equals(emprunteur))// si il est déja emprunté
+		else if(emprunteur !=null)// si il est déja emprunté
 			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déjà emprunté");
 		else if(reserveur!=null && !ab.equals(reserveur)) { // si il est réservé par un autre ab
 			int heure = reservationDate.getHours()+2;
 			int minutes = reservationDate.getMinutes();
-			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est déja réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
+			throw new RestrictionException("Ce "+ this.getClass().getSimpleName() +" est réservé juqu'à "+heure+"h"+minutes+ " par un autre abonné.");
 		}
 		// sinon (si il l'a réservé ou qu'il n'est pas réservé)
 		this.setEmprunteur(ab); 

@@ -18,7 +18,7 @@ public class RequetesBD {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
-			String selectSql = "SELECT * FROM dvd";
+			String selectSql = "SELECT * FROM document";
 			ResultSet resultSet = statement.executeQuery(selectSql);
 			List<IDocument> L=new ArrayList<IDocument>();
 			while (resultSet.next()) {
@@ -84,7 +84,7 @@ public class RequetesBD {
 		try {
 			Connection connexion = ConnexionBD.getConnexion();
 			Statement statement = connexion.createStatement();
-			String update = "UPDATE dvd SET emprunteur = " + numAb + " WHERE id = " + numDoc;
+			String update = "UPDATE document SET emprunteur = " + numAb + " WHERE id = " + numDoc;
 			statement.executeUpdate(update);
 			statement.close();
 		} catch (SQLException e) {

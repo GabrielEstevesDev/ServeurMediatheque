@@ -5,7 +5,6 @@ import java.util.List;
 
 import bd.RequetesBD;
 import bserveur.Serveur;
-import document.ConcurrentDocument;
 import mediatheque.Abonne;
 import mediatheque.IDocument;
 import mediatheque.Mediatheque;

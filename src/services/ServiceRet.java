@@ -31,12 +31,23 @@ public class ServiceRet extends ServiceAbstract{
 			String numDoc =socketIn.readLine();
 			IDocument doc = Mediatheque.getDoc(Integer.parseInt(numDoc));
 			
-			if(doc==null) {
+			if(doc==null) { 
 				socketOut.println(bttp.encoder("Ce Document n'existe pas."));
 				//on arrête le service
 				this.getSocket().close();
+				return;
 			}
-			int num = Integer.parseInt(numDoc);
+			else if(doc.emprunteur()==null && doc.reserveur()==null){ //si pas de réserveur ou pas d'emprunteur
+				socketOut.println(bttp.encoder("Vous ne pouvez pas rendre un Document qui n'a pas été emprunté ou réservé."));
+				this.getSocket().close();
+				return; //fin de la fonction
+			}
+			else if(doc.reserveur()!=null) { //si réservé
+				socketOut.println(bttp.encoder("La réservation a bien été annulé pour ce Document."));
+				doc.retour(); //annulation de réservation
+				this.getSocket().close();
+				return;
+			}
 			String msg = "Attention ! Vous êtes bannis 1 mois !";
 			boolean ban=false;
 			if (doc.getBonEtat()) {
@@ -53,19 +64,18 @@ public class ServiceRet extends ServiceAbstract{
 			
 			if(doc.renduEnretard()) { //si le rendu est en retard 
 				doc.emprunteur().banniMois(); //on bannis l'abonne 
-				if(doc.emprunteur().dateBannissement()==null)
+				if(ban==false)
 					msg+=" Vous avez rendu le "+doc.getClass().getSimpleName()+" avec un retard de plus de 2 semaines.";
 				else
-					msg+="De plus vous avez rendu le "+doc.getClass().getSimpleName()+" avec un retard de plus de 2 semaines.";
+					msg+=" De plus vous avez rendu le "+doc.getClass().getSimpleName()+" avec un retard de plus de 2 semaines.";
 				ban=true;
 			}
 			doc.retour();
 			//fin service
 			if(ban) //si l'abonne est bannis ou non nous affichons le message
-				socketOut.println(bttp.encoder("Le retour à bien été effectué pour le DVD "+numDoc+" "+msg));
+				socketOut.println(bttp.encoder("Le retour à bien été effectué pour le DVD "+numDoc+". "+msg));
 			else
-				socketOut.println(bttp.encoder("Le retour à bien été effectué pour le DVD "+numDoc));
-				
+				socketOut.println(bttp.encoder("Le retour à bien été effectué pour le DVD "+numDoc+ " ."));
 			this.getSocket().close();
 		} catch (IOException e) {
 			try {
